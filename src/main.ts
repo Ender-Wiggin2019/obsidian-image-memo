@@ -33,9 +33,16 @@ export default class ReactStarterPlugin extends Plugin {
   private view: MyReactView;
 
   async onload(): Promise<void> {
+    console.log("start!");
     this.registerView(
       VIEW_TYPE,
       (leaf: WorkspaceLeaf) => (this.view = new MyReactView(leaf))
+    );
+
+    // Register image info block
+    this.registerMarkdownCodeBlockProcessor(
+      "journaling",
+      async (source, el, ctx) => {}
     );
 
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));

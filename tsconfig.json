@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "baseUrl": ".",
-    "allowSyntheticDefaultImports": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "jsx": "react",
     "module": "ESNext",
-    "target": "esnext",
+    "target": "ES6",
     "allowJs": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "lib": ["dom", "esnext"]
+    "isolatedModules": true,
+    "lib": ["DOM", "ES5", "ES6", "ES7"],
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "src/ui/PackageManagerUI.tsx"]
 }
