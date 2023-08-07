@@ -1,3 +1,62 @@
 
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.gallery-info-container {
+	border: 1px solid var(--background-modifier-border);
+	font-size: 14px;
+	color: var(--text-muted);
+	padding: 6px 14px;
+	border-radius: 4px;
+	background-color: var(--background-primary-alt);
+	position: inherit;
+	margin-bottom: 30px;
+}
+
+.gallery-info-container .gallery-info-section {
+	margin: 6px 0;
+	display: flex;
+}
+
+.gallery-info-section-label {
+	margin-right: 20px;
+}
+
+.gallery-info-section-value {
+	color: var(--text-a);
+	overflow-wrap: anywhere;
+}
+
+.gallery-info-color {
+	width: 30px;
+	height: 10px;
+	margin-top: 6px;
+	background-color: aqua;
+	float: left;
+}
+
+.gallery-info-container .gallery-info-section-tags {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.gallery-info-section-tags > .tag {
+	background-color: #333333;
+	border: none;
+	color: black;
+	--text-a: var(--bright-orange);
+	--text-a-hover: var(--bright-blue);
+	font-size: 11px;
+	padding: 1px 8px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 0px 0px;
+	cursor: pointer;
+	border-radius: 14px;
+}
+
+.img-info-link {
+	color: var(--text-muted);
+}

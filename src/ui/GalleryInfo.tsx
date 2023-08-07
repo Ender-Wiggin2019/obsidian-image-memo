@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import classNames from 'classnames';
 
-interface IProps {
+export interface GalleryInfoProps {
   name: string;
   path: string;
   extension: string;
-  size: string;
+  size: number;
   dimensions: HTMLImageElement | null;
   date: string;
   tagList: string[];
@@ -15,7 +16,7 @@ interface IProps {
   infoList: string[];
 }
 
-const GalleryInfo: React.FC<IProps> = ({
+const GalleryInfo: React.FC<GalleryInfoProps> = ({
   name,
   path,
   extension,
@@ -39,194 +40,57 @@ const GalleryInfo: React.FC<IProps> = ({
     }
   }, [dimensions]);
 
-  return (
-    <div
-      style={
-        {
-          /* your style here */
-        }
-      }
-    >
-      {!infoList.includes("name") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Name</span>
-          <div>{name}</div>
-        </div>
-      )}
-      {!infoList.includes("path") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Path</span>
-          <div>{path}</div>
-        </div>
-      )}
-      {!infoList.includes("extension") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Extension</span>
-          <div>{extension}</div>
-        </div>
-      )}
-      {!infoList.includes("size") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Size</span>
-          <div>{size} Mb</div>
-        </div>
-      )}
-      {!infoList.includes("dimension") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Dimensions</span>
-          <div>
-            {isVideo
-              ? `${width} x ${height} px`
-              : `${dimensions?.naturalWidth} x ${dimensions?.naturalHeight} px`}
-          </div>
-        </div>
-      )}
-      {!infoList.includes("date") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Date</span>
-          <div>{date}</div>
-        </div>
-      )}
-      {!infoList.includes("tags") && tagList && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Tags</span>
-          <div
-            style={
-              {
-                /* your style here */
-              }
-            }
-          >
-            {tagList.map((tag) => (
-              <a
-                key={tag}
-                href={tag}
-                style={
-                  {
-                    /* your style here */
-                  }
-                }
-              >
-                {tag}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-      {!infoList.includes("backlinks") && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Backlinks</span>
-          <div>
-            {imgLinks.map((link) => (
-              <li
-                key={link.path}
-                style={
-                  {
-                    /* your style here */
-                  }
-                }
-              >
-                <a href={link.path}>{link.name}</a>
-              </li>
-            ))}
-          </div>
-        </div>
-      )}
-      {Object.keys(frontmatter).map(
-        (yaml) =>
-          yaml !== "position" &&
-          !infoList.includes(yaml) && (
-            <div
-              key={yaml}
-              style={
-                {
-                  /* your style here */
-                }
-              }
-            >
-              <span>{yaml}</span>
-              <div>{frontmatter[yaml]}</div>
-            </div>
-          )
-      )}
-      {!infoList.includes("palette") && colorList && (
-        <div
-          style={
-            {
-              /* your style here */
-            }
-          }
-        >
-          <span>Palette</span>
-          <div
-            style={
-              {
-                /* your style here */
-              }
-            }
-          >
-            {colorList.map((color) => (
-              <div
-                key={color.hex}
-                aria-label={color.hex}
-                style={{
-                  backgroundColor: color.hex /* and your other styles here */,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+	return (
+		<div className="gallery-info-container">
+			{!infoList.includes("name") && (
+				<div className="gallery-info-section">
+					<span className="gallery-info-section-label">Name</span>
+					<div className="gallery-info-section-value">{name}</div>
+				</div>
+			)}
+			{!infoList.includes("path") && (
+				<div className="gallery-info-section">
+					<span className="gallery-info-section-label">Path</span>
+					<div className="gallery-info-section-value">{path}</div>
+				</div>
+			)}
+			{!infoList.includes("size") && (
+				<div className="gallery-info-section">
+					<span className="gallery-info-section-label">Size</span>
+					<div className="gallery-info-section-value">{size}</div>
+				</div>
+			)}
+			{/*...*/}
+			{frontmatter && Object.keys(frontmatter).map(
+				(yaml) =>
+					yaml !== "position" &&
+					!infoList.includes(yaml) && (
+						<div className="gallery-info-section">
+							<span className="gallery-info-section-label">{yaml}</span>
+							<div className="gallery-info-section-value">
+								{frontmatter[yaml]}
+							</div>
+						</div>
+					)
+			)}
+			{!infoList.includes("palette") && colorList && (
+				<div className="gallery-info-section mod-tags">
+					<span className="gallery-info-section-label">Palette</span>
+					<div className="gallery-info-section-value">
+						<div style={{width: 'max-content'}}>
+							{colorList.map((color) => (
+								<div
+									className="gallery-info-color"
+									aria-label={color.hex}
+									style={{ backgroundColor: color.hex }}
+								/>
+							))}
+						</div>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default GalleryInfo;
