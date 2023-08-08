@@ -10,9 +10,9 @@ export interface GalleryInfoProps {
   date: string;
   tagList: string[];
   colorList: { hex: string }[];
-  isVideo: boolean;
-  imgLinks: { path: string; name: string }[];
-  frontmatter: { [key: string]: any };
+  // isVideo: boolean;
+  // imgLinks: { path: string; name: string }[];
+  // frontmatter: { [key: string]: any };
   infoList: string[];
 }
 
@@ -25,9 +25,9 @@ const GalleryInfo: React.FC<GalleryInfoProps> = ({
   date,
   tagList,
   colorList,
-  isVideo,
-  imgLinks,
-  frontmatter,
+  // isVideo,
+  // imgLinks,
+  // frontmatter,
   infoList,
 }) => {
   const [width, setWidth] = useState<number | null>(null);
@@ -61,18 +61,18 @@ const GalleryInfo: React.FC<GalleryInfoProps> = ({
 				</div>
 			)}
 			{/*...*/}
-			{frontmatter && Object.keys(frontmatter).map(
-				(yaml) =>
-					yaml !== "position" &&
-					!infoList.includes(yaml) && (
-						<div className="gallery-info-section">
-							<span className="gallery-info-section-label">{yaml}</span>
-							<div className="gallery-info-section-value">
-								{frontmatter[yaml]}
-							</div>
-						</div>
-					)
-			)}
+			{/*{frontmatter && Object.keys(frontmatter).map(*/}
+			{/*	(yaml) =>*/}
+			{/*		yaml !== "position" &&*/}
+			{/*		!infoList.includes(yaml) && (*/}
+			{/*			<div className="gallery-info-section">*/}
+			{/*				<span className="gallery-info-section-label">{yaml}</span>*/}
+			{/*				<div className="gallery-info-section-value">*/}
+			{/*					{frontmatter[yaml]}*/}
+			{/*				</div>*/}
+			{/*			</div>*/}
+			{/*		)*/}
+			{/*)}*/}
 			{!infoList.includes("palette") && colorList && (
 				<div className="gallery-info-section mod-tags">
 					<span className="gallery-info-section-label">Palette</span>

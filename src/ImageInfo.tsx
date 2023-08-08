@@ -11,19 +11,28 @@ import {
 	VIDEO_REGEX
 } from "./types";
 import GalleryInfo, { GalleryInfoProps } from "./ui/GalleryInfo";
-import { getImgInfo } from "./utils";
+import { getImageResources, getImgInfo } from "./utils";
 import React from "react";
 import {createRoot} from 'react-dom/client'
 import DiceRoller from "./ui/DicerRoller";
 import ReactDOM from "react-dom";
+import { getImages } from "./source_process/GetImages";
+import { AppContext } from './utils/AppContext';
+import { ImageDisplay } from "./ui/ImageDisplay";
+import { getTags } from "./source_process/GetTags";
 
 export async function imageInfo(source: string, el: HTMLElement, vault: Vault, metadata: MetadataCache, plugin: JournalingPlugin) {
+
+	// Get all images
+	const images = getImages(source);
+	const tags = getTags(source);
 
 	let args: InfoBlockArgs = {
 		imgPath: '',
 		ignoreInfo: ''
 	};
 
+	// get the arguments
 	source.split('\n').map(e => {
 		if (e) {
 			let param = e.trim().split('=');
@@ -32,51 +41,44 @@ export async function imageInfo(source: string, el: HTMLElement, vault: Vault, m
 	});
 
 	let infoList = args.ignoreInfo.split(';').map(param => param.trim().toLowerCase()).filter(e => e !== "");
-	let imgName = args.imgPath.split('/').slice(-1)[0];
+	let imgName = images[0].link.split('/').slice(-1)[0];
 	let elCanvas = el.createDiv({
 		cls: 'ob-gallery-info-block',
 		attr: { 'style': `width: 100%; height: auto; float: left` }
 	});
 
-	let imgTFile = vault.getAbstractFileByPath(args.imgPath);
-	let imgURL = vault.adapter.getResourcePath(args.imgPath);
+	// let imgTFile = vault.getAbstractFileByPath(args.imgPath);
+	let imgTFile = vault.getAbstractFileByPath(images[0].link);
+	let imgURL = vault.adapter.getResourcePath(images[0].link);
 
 	// Handle problematic arg
-	if (!args.imgPath || !imgTFile) {
-		MarkdownRenderer.renderMarkdown(GALLERY_INFO_USAGE, elCanvas, '/', plugin);
-		return;
-	}
+	// if (!args.imgPath || !imgTFile) {
+	// 	MarkdownRenderer.renderMarkdown(GALLERY_INFO_USAGE, elCanvas, '/', plugin);
+	// 	return;
+	// }
 
 	let measureEl, colors, isVideo;
 	// Get image dimensions
-	if (imgURL.match(VIDEO_REGEX)) {
-		measureEl = document.createElement('video');
-		isVideo = true;
-	} else {
-		measureEl = new Image();
-		colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
-		isVideo = false;
-	}
+	// if (imgURL.match(VIDEO_REGEX)) {
+	// 	measureEl = document.createElement('video');
+	// 	isVideo = true;
+	// } else {
+	// 	measureEl = new Image();
+	// 	colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
+	// 	isVideo = false;
+	// }
+	// TODO: 只有图片格式
+	measureEl = new Image();
+	colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
 
 	measureEl.src = imgURL;
 
 	// Handle disabled img info functionality or missing info block
-	let imgInfo = await getImgInfo(imgTFile.path, vault, metadata, plugin, false);
+	// let imgInfo = await getImgInfo(imgTFile.path, vault, metadata, plugin, false);
 	let imgTags = null;
 
-	console.log('args', imgInfo)
-	console.log('imgInfo', !imgInfo)
-	if (!imgInfo) {
-		MarkdownRenderer.renderMarkdown(GALLERY_INFO_USAGE, elCanvas, '/', plugin);
-		return;
-	}
-
-	let imgInfoCache = metadata.getFileCache(imgInfo);
-	if (imgInfo) {
-		imgTags = getAllTags(imgInfoCache);
-	}
-
 	let imgLinks: { path: string; name: string; }[] = [];
+	// get all files!
 	vault.getMarkdownFiles().forEach(mdFile => {
 		metadata.getFileCache(mdFile)?.links?.forEach(link => {
 			if (link.link === args.imgPath || link.link === imgName) {
@@ -96,9 +98,9 @@ export async function imageInfo(source: string, el: HTMLElement, vault: Vault, m
 			size: imgTFile.stat.size / 1000000,
 			colorList: colors,
 			tagList: imgTags,
-			isVideo: isVideo,
-			imgLinks: imgLinks,
-			frontmatter: imgInfoCache.frontmatter,
+			// isVideo: isVideo,
+			// imgLinks: imgLinks,
+			// frontmatter: imgInfoCache.frontmatter,
 			infoList: infoList
 		}
 		// const reactComponent = React.createElement(GalleryInfo, props);
@@ -110,9 +112,21 @@ export async function imageInfo(source: string, el: HTMLElement, vault: Vault, m
 
 		// TODO: TEST
 
+		// const imgResources = getImageResources(imgTFile.path,
+		// 	imgTFile.basename,
+		// 	this.app.vault.getFiles(),
+		// 	this.app.vault.adapter);
+		//
+		// console.log('Object.keys(imgResources)[0]', Object.keys(imgResources)[0]);
+		const images = getImages(source);
+		console.log('images', images)
 
 // 在root上渲染React组件
-		root.render(<GalleryInfo {...props} />);
+		root.render(  <AppContext.Provider value={this.app}>
+				<GalleryInfo {...props} />
+			<ImageDisplay image={images[0]} plugin={plugin}/>
+			{tags}
+			</AppContext.Provider>);
 
 		// new GalleryInfo({
 		// 	props: {

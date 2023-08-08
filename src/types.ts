@@ -2,6 +2,14 @@ import type { DataAdapter, Vault, MetadataCache } from 'obsidian';
 import { TFolder, TFile } from 'obsidian';
 import type GalleryPlugin from './main';
 
+export type ImageLink = {
+	type: 'local' | 'external';
+	link: string;
+}
+// | {
+// 	type: 'placeholder';
+// }
+
 export interface JournalingSettings {
 	imgDataFolder: string,
 	galleryLoadPath: string,
