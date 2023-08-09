@@ -2,7 +2,7 @@ import { ItemView, Plugin, WorkspaceLeaf } from "obsidian";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import DiceRoller from "./ui/DicerRoller";
+import DiceRoller from "./components/DicerRoller";
 import { JournalingSettings } from "./types";
 import { imageInfo } from "./ImageInfo";
 const VIEW_TYPE = "react-view";
@@ -34,8 +34,7 @@ export default class JournalingPlugin extends Plugin {
   private view: MyReactView;
   public settings: JournalingSettings;
 
-
-	async onload(): Promise<void> {
+  async onload(): Promise<void> {
     console.log("start!");
     this.registerView(
       VIEW_TYPE,
@@ -45,9 +44,9 @@ export default class JournalingPlugin extends Plugin {
     // Register image info block
     this.registerMarkdownCodeBlockProcessor(
       "journaling",
-      async (source, el, ctx) => {
-		  imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
-	  }
+      async (source, el, _ctx) => {
+        imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
+      }
     );
 
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));

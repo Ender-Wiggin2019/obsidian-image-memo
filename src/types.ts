@@ -1,63 +1,63 @@
-import type { DataAdapter, Vault, MetadataCache } from 'obsidian';
-import { TFolder, TFile } from 'obsidian';
-import type GalleryPlugin from './main';
+import type { DataAdapter, Vault, MetadataCache } from "obsidian";
+import { TFolder, TFile } from "obsidian";
+import type GalleryPlugin from "./main";
 
 export type ImageLink = {
-	type: 'local' | 'external';
-	link: string;
-}
+  type: "local" | "external";
+  link: string;
+};
 // | {
 // 	type: 'placeholder';
 // }
 
 export interface JournalingSettings {
-	imgDataFolder: string,
-	galleryLoadPath: string,
-	width: number;
-	reverseDisplay: boolean;
+  imgDataFolder: string;
+  galleryLoadPath: string;
+  width: number;
+  reverseDisplay: boolean;
 }
 
 export interface ImageResources {
-	[key: string]: string;
+  [key: string]: string;
 }
 
 export interface ImageDimensions {
-	width: number,
-	height: number;
+  width: number;
+  height: number;
 }
 
 export interface GalleryBlockArgs {
-	type: string,
-	path: string,
-	name: string,
-	imgWidth: number,
-	divWidth: number,
-	divAlign: string,
-	reverseOrder: string,
-	customList: string;
+  type: string;
+  path: string;
+  name: string;
+  imgWidth: number;
+  divWidth: number;
+  divAlign: string;
+  reverseOrder: string;
+  customList: string;
 }
 
 export interface InfoBlockArgs {
-	imgPath: string,
-	ignoreInfo: string
+  imgPath: string;
+  ignoreInfo: string;
 }
 
 export const SETTINGS: JournalingSettings = {
-	imgDataFolder: null,
-	galleryLoadPath: "/",
-	width: 400,
-	reverseDisplay: true
+  imgDataFolder: null,
+  galleryLoadPath: "/",
+  width: 400,
+  reverseDisplay: true,
 };
 
 export const EXTRACT_COLORS_OPTIONS = {
-	pixels: 20000,
-	distance: 0.2,
-	saturationImportance: 0.2,
-	splitPower: 10,
-	colorValidator: (red: any, green: any, blue: any, alpha = 255) => alpha > 250
+  pixels: 20000,
+  distance: 0.2,
+  saturationImportance: 0.2,
+  splitPower: 10,
+  colorValidator: (red: any, green: any, blue: any, alpha = 255) => alpha > 250,
 };
 
-export const EXTENSIONS = ['png', 'jpg', 'jpeg', 'mp4'];
+export const EXTENSIONS = ["png", "jpg", "jpeg", "mp4"];
 
 export const VIDEO_REGEX = new RegExp(".*\\.mp4\\?\\d*$");
 
@@ -133,7 +133,7 @@ Please make sure that a Valid Folder is specified in the settings for the plugin
  * @param imgPath - Relative vault path of related image
  */
 const initializeInfo = (imgPath: string, imgName: string): string => {
-	return `<span class='gallery-span-info'> [[${imgName}]] </span>\n
+  return `<span class='gallery-span-info'> [[${imgName}]] </span>\n
 %% Place Tags Here %%
 \`\`\`gallery-info
 imgPath=${imgPath}
