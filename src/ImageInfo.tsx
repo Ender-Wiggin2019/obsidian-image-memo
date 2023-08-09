@@ -86,15 +86,15 @@ export async function imageInfo(
 
   // const imgLinks: { path: string; name: string }[] = [];
   // get all files!
-	console.log('length', vault.getMarkdownFiles().length);
+  console.log("length", vault.getMarkdownFiles().length);
   vault.getMarkdownFiles().forEach((mdFile) => {
     // metadata.getFileCache(mdFile)?.links?.forEach((link) => {
-	// 	console.log('block', link.blocks);
+    // 	console.log('block', link.blocks);
     //   // if (link.link === args.imgPath || link.link === imgName) {
     //   //   imgLinks.push({ path: mdFile.path, name: mdFile.basename });
     //   // }
     // });
-	  console.log('test', metadata.getFileCache(mdFile)?.blocks ?? '');
+    console.log("test", metadata.getFileCache(mdFile)?.blocks ?? "");
   });
 
   console.log(
@@ -140,7 +140,11 @@ export async function imageInfo(
       <AppContext.Provider value={this.app}>
         <GalleryInfo {...props} />
         <ImageDisplay image={images[0]} plugin={plugin} />
-		  {tags.map((tag, index) => (<Badge key={index} className='bg-zinc-800 text-zinc-50'>{tag}</Badge>))}
+        {tags.map((tag, index) => (
+          <Badge key={index} className="bg-zinc-800 text-zinc-50">
+            {tag}
+          </Badge>
+        ))}
       </AppContext.Provider>
     );
 

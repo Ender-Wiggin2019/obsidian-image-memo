@@ -44,7 +44,9 @@ const GalleryInfo: React.FC<GalleryInfoProps> = ({
     <div className="gallery-info-container">
       {!infoList.includes("name") && (
         <div className="gallery-info-section">
-          <span className="gallery-info-section-label text-green-500">Name</span>
+          <span className="gallery-info-section-label text-green-500">
+            Name
+          </span>
           <div className="gallery-info-section-value">{name}</div>
         </div>
       )}
