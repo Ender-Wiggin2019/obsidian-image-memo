@@ -2,14 +2,7 @@ import type { Vault, MetadataCache, WorkspaceLeaf } from "obsidian";
 import { MarkdownRenderer, TFile, getAllTags } from "obsidian";
 import JournalingPlugin from "./main";
 import { extractColors } from "extract-colors";
-import {
-  EXTENSIONS,
-  EXTRACT_COLORS_OPTIONS,
-  GALLERY_INFO_USAGE,
-  InfoBlockArgs,
-  OB_GALLERY_INFO,
-  VIDEO_REGEX,
-} from "./types";
+import { InfoBlockArgs } from "./types";
 import GalleryInfo, { GalleryInfoProps } from "./components/GalleryInfo";
 import { getImageResources, getImgInfo } from "./utils";
 import React from "react";
@@ -21,6 +14,13 @@ import { AppContext } from "./utils/AppContext";
 import { ImageDisplay } from "./components/ImageDisplay";
 import { getTags } from "./source_process/GetTags";
 import { Badge } from "./ui/badge";
+import {
+  EXTENSIONS,
+  EXTRACT_COLORS_OPTIONS,
+  GALLERY_INFO_USAGE,
+  OB_GALLERY_INFO,
+  VIDEO_REGEX,
+} from "./constants";
 
 export async function imageInfo(
   source: string,

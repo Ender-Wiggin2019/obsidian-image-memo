@@ -84,47 +84,10 @@
     "@lezer/lr" "^1.0.0"
     "style-mod" "^4.0.0"
 
-"@codemirror/rangeset@^0.19.5":
-  "integrity" "sha512-V8YUuOvK+ew87Xem+71nKcqu1SXd5QROMRLMS/ljT5/3MCxtgrRie1Cvild0G/Z2f1fpWxzX78V0U4jjXBorBQ=="
-  "resolved" "https://registry.npmjs.org/@codemirror/rangeset/-/rangeset-0.19.9.tgz"
-  "version" "0.19.9"
-  dependencies:
-    "@codemirror/state" "^0.19.0"
-
-"@codemirror/state@^0.19.0":
-  "integrity" "sha512-psOzDolKTZkx4CgUqhBQ8T8gBc0xN5z4gzed109aF6x7D7umpDRoimacI/O6d9UGuyl4eYuDCZmDFr2Rq7aGOw=="
-  "resolved" "https://registry.npmjs.org/@codemirror/state/-/state-0.19.9.tgz"
-  "version" "0.19.9"
-  dependencies:
-    "@codemirror/text" "^0.19.0"
-
-"@codemirror/state@^0.19.3", "@codemirror/state@^0.19.6":
-  "integrity" "sha512-psOzDolKTZkx4CgUqhBQ8T8gBc0xN5z4gzed109aF6x7D7umpDRoimacI/O6d9UGuyl4eYuDCZmDFr2Rq7aGOw=="
-  "resolved" "https://registry.npmjs.org/@codemirror/state/-/state-0.19.9.tgz"
-  "version" "0.19.9"
-  dependencies:
-    "@codemirror/text" "^0.19.0"
-
 "@codemirror/state@^6.0.0", "@codemirror/state@^6.0.1", "@codemirror/state@^6.1.4":
   "integrity" "sha512-RupHSZ8+OjNT38zU9fKH2sv+Dnlr8Eb8sl4NOnnqz95mCFTZUaiRP8Xv5MeeaG0px2b8Bnfe7YGwCV3nsBhbuw=="
   "resolved" "https://registry.npmjs.org/@codemirror/state/-/state-6.2.1.tgz"
   "version" "6.2.1"
-
-"@codemirror/text@^0.19.0":
-  "integrity" "sha512-T9jnREMIygx+TPC1bOuepz18maGq/92q2a+n4qTqObKwvNMg+8cMTslb8yxeEDEq7S3kpgGWxgO1UWbQRij0dA=="
-  "resolved" "https://registry.npmjs.org/@codemirror/text/-/text-0.19.6.tgz"
-  "version" "0.19.6"
-
-"@codemirror/view@^0.19.31":
-  "integrity" "sha512-0eg7D2Nz4S8/caetCTz61rK0tkHI17V/d15Jy0kLOT8dTLGGNJUponDnW28h2B6bERmPlVHKh8MJIr5OCp1nGw=="
-  "resolved" "https://registry.npmjs.org/@codemirror/view/-/view-0.19.48.tgz"
-  "version" "0.19.48"
-  dependencies:
-    "@codemirror/rangeset" "^0.19.5"
-    "@codemirror/state" "^0.19.3"
-    "@codemirror/text" "^0.19.0"
-    "style-mod" "^4.0.0"
-    "w3c-keyname" "^2.2.4"
 
 "@codemirror/view@^6.0.0", "@codemirror/view@^6.0.1":
   "integrity" "sha512-ofcsI7lRFo4N0rfnd+V3Gh2boQU3DmaaSKhDOvXUWjeOeuupMXer2e/3i9TUFN7aEIntv300EFBWPEiYVm2svg=="
@@ -390,13 +353,6 @@
   "resolved" "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
   "version" "0.2.0"
 
-"@types/codemirror@0.0.108":
-  "integrity" "sha512-3FGFcus0P7C2UOGCNUVENqObEb4SFk+S8Dnxq7K6aIsLVs/vDtlangl3PEO0ykaKXyK56swVF6Nho7VsA44uhw=="
-  "resolved" "https://registry.npmjs.org/@types/codemirror/-/codemirror-0.0.108.tgz"
-  "version" "0.0.108"
-  dependencies:
-    "@types/tern" "*"
-
 "@types/codemirror@5.60.8":
   "integrity" "sha512-VjFgDF/eB+Aklcy15TtOTLQeMjTo07k7KAjql8OK5Dirr7a6sJY4T1uVBDuTVG9VEmn1uUsohOpYnVfgC6/jyw=="
   "resolved" "https://registry.npmjs.org/@types/codemirror/-/codemirror-5.60.8.tgz"
@@ -412,9 +368,9 @@
     "@types/ms" "*"
 
 "@types/estree@*":
-  "integrity" "sha512-laIjwTQaD+5DukBZaygQ79K1Z0jb1bPEMRrkXSLjtCcZm+abyp5YbrqpSLzD42FwWW6gK/aS4NYpJ804nG2brg=="
-  "resolved" "https://registry.npmjs.org/@types/estree/-/estree-0.0.46.tgz"
-  "version" "0.0.46"
+  "integrity" "sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA=="
+  "resolved" "https://registry.npmjs.org/@types/estree/-/estree-1.0.1.tgz"
+  "version" "1.0.1"
 
 "@types/js-cookie@^2.2.6":
   "integrity" "sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA=="
@@ -450,6 +406,13 @@
   "integrity" "sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA=="
   "resolved" "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.2.7.tgz"
   "version" "18.2.7"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-measure@^2.0.8":
+  "integrity" "sha512-Pu4/hQ/1AKVN6efoawtcM+l376WYOI8e1fiM6ir4pdLkHilDCkJLjUGvAm0mWKJ0GE6hzu55yCrcJ/xNyEdFwA=="
+  "resolved" "https://registry.npmjs.org/@types/react-measure/-/react-measure-2.0.8.tgz"
+  "version" "2.0.8"
   dependencies:
     "@types/react" "*"
 
@@ -2082,11 +2045,6 @@
   "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.5.tgz"
   "version" "1.2.5"
 
-"moment@2.29.1":
-  "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
-  "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
-  "version" "2.29.1"
-
 "moment@2.29.4":
   "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
@@ -2234,19 +2192,9 @@
     "parsimmon" "^1.18.0"
     "preact" "^10.6.5"
 
-"obsidian@^0.13.26":
-  "integrity" "sha512-uAOrIyeHE9qYzg1Qjfpy/qlyLUFX9oyKWeHYO8NVDoI+pm5VUTMe7XWcsXPwb9iVsVmggVJcdV15Vqm9bljhxQ=="
-  "resolved" "https://registry.npmjs.org/obsidian/-/obsidian-0.13.30.tgz"
-  "version" "0.13.30"
-  dependencies:
-    "@codemirror/state" "^0.19.6"
-    "@codemirror/view" "^0.19.31"
-    "@types/codemirror" "0.0.108"
-    "moment" "2.29.1"
-
-"obsidian@github:obsidianmd/obsidian-api#master":
-  "resolved" "git+ssh://git@github.com/obsidianmd/obsidian-api.git#971b9e83ca65f0c3655346938167f666a8a868ff"
-  "version" "1.2.8"
+"obsidian@github:obsidianmd/obsidian-api#master", "obsidian@obsidianmd/obsidian-api#master":
+  "resolved" "git+ssh://git@github.com/obsidianmd/obsidian-api.git#90517f4fa762838008a638069d8e151f071a8ef7"
+  "version" "1.4.0"
   dependencies:
     "@types/codemirror" "5.60.8"
     "moment" "2.29.4"

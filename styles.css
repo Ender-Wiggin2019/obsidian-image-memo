@@ -26,6 +26,9 @@
 		max-width: 1536px;
 	}
 }
+.absolute {
+	position: absolute;
+}
 .relative {
 	position: relative;
 }
@@ -46,6 +49,9 @@
 }
 .transform {
 	transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.cursor-pointer {
+	cursor: pointer;
 }
 .grid-cols-5 {
 	grid-template-columns: repeat(5, minmax(0, 1fr));
