@@ -77,6 +77,8 @@ export default class GitHubCalendar extends React.Component<Props, State> {
       }
     }
 
+	console.log('debug: calendar dates', d)
+
     return result;
   }
 
@@ -123,7 +125,10 @@ export default class GitHubCalendar extends React.Component<Props, State> {
             width={this.panelSize}
             height={this.panelSize}
             fill={color}
-            className={clsx({ "cursor-pointer": contribution.value > 0 })}
+            className={clsx(
+              { "cursor-pointer": contribution.value > 0 },
+              "border-1 border-zinc-500"
+            )}
             // style={{
             //   backgroundColor: color,
             //   width: this.panelSize,

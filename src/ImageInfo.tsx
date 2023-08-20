@@ -135,16 +135,20 @@ export async function imageInfo(
     const images = getImages(source);
     console.log("images", images);
 
+    const uniqueKey = images[0].link + tags.join("-");
+
     // 在root上渲染React组件
     root.render(
       <AppContext.Provider value={this.app}>
-        <GalleryInfo {...props} />
-        <ImageDisplay image={images[0]} plugin={plugin} />
-        {tags.map((tag, index) => (
-          <Badge key={index} className="bg-zinc-800 text-zinc-50">
-            {tag}
-          </Badge>
-        ))}
+        <div key={uniqueKey}>
+          <GalleryInfo {...props} />
+          <ImageDisplay image={images[0]} plugin={plugin} />
+          {tags.map((tag, index) => (
+            <Badge key={index} className="bg-zinc-800 text-zinc-50">
+              {tag}
+            </Badge>
+          ))}
+        </div>
       </AppContext.Provider>
     );
 

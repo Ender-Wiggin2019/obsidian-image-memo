@@ -13,6 +13,17 @@ export interface IJournalingData {
   dailyTags: IJournalingDailyTag[];
 }
 
+export interface IJournalingDailyImages {
+  date: Moment;
+  count: number;
+  images: string[];
+}
+
+export interface IJournalingTags {
+  tag: string;
+  dates: IJournalingDailyImages[];
+}
+
 export interface IDot {
   isFilled: boolean;
 }

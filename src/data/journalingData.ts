@@ -26,7 +26,7 @@ export async function getJournalingDailyTag(
   app: App,
   note: TFile
 ): Promise<IJournalingDailyTag[]> {
-  if (!note) {
+  if (!note || !app || !app.vault) {
     return null;
   }
   const fileContents = await app.vault.cachedRead(note);
