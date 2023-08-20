@@ -1,7 +1,8 @@
 import type { DataAdapter, Vault, MetadataCache } from "obsidian";
 import { TFolder, TFile } from "obsidian";
 import type GalleryPlugin from "./main";
-import { EXTENSIONS, ImageResources } from "./types";
+import { ImageResources } from "./types";
+import { EXTENSIONS } from "./constants";
 /**
  * Return initial img info file content
  * @param imgPath - Relative vault path of related image

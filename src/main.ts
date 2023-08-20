@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import DiceRoller from "./components/DicerRoller";
 import { JournalingSettings } from "./types";
 import { imageInfo } from "./ImageInfo";
+import JournalingView from "./views";
 const VIEW_TYPE = "react-view";
 
 class MyReactView extends ItemView {
@@ -31,14 +32,15 @@ class MyReactView extends ItemView {
 }
 
 export default class JournalingPlugin extends Plugin {
-  private view: MyReactView;
+  // private view: MyReactView;
+  private view: JournalingView;
   public settings: JournalingSettings;
 
   async onload(): Promise<void> {
     console.log("start!");
     this.registerView(
       VIEW_TYPE,
-      (leaf: WorkspaceLeaf) => (this.view = new MyReactView(leaf))
+      (leaf: WorkspaceLeaf) => (this.view = new JournalingView(leaf))
     );
 
     // Register image info block

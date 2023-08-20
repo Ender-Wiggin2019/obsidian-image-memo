@@ -2,14 +2,7 @@ import type { Vault, MetadataCache, WorkspaceLeaf } from "obsidian";
 import { MarkdownRenderer, TFile, getAllTags } from "obsidian";
 import JournalingPlugin from "./main";
 import { extractColors } from "extract-colors";
-import {
-  EXTENSIONS,
-  EXTRACT_COLORS_OPTIONS,
-  GALLERY_INFO_USAGE,
-  InfoBlockArgs,
-  OB_GALLERY_INFO,
-  VIDEO_REGEX,
-} from "./types";
+import { InfoBlockArgs } from "./types";
 import GalleryInfo, { GalleryInfoProps } from "./components/GalleryInfo";
 import { getImageResources, getImgInfo } from "./utils";
 import React from "react";
@@ -21,6 +14,12 @@ import { AppContext } from "./utils/AppContext";
 import { ImageDisplay } from "./components/ImageDisplay";
 import { getTags } from "./source_process/GetTags";
 import { Badge } from "./ui/badge";
+import {
+  EXTENSIONS,
+  EXTRACT_COLORS_OPTIONS,
+  GALLERY_INFO_USAGE,
+  OB_GALLERY_INFO,
+} from "./constants";
 
 export async function imageInfo(
   source: string,
@@ -86,15 +85,15 @@ export async function imageInfo(
 
   // const imgLinks: { path: string; name: string }[] = [];
   // get all files!
-	console.log('length', vault.getMarkdownFiles().length);
+  console.log("length", vault.getMarkdownFiles().length);
   vault.getMarkdownFiles().forEach((mdFile) => {
     // metadata.getFileCache(mdFile)?.links?.forEach((link) => {
-	// 	console.log('block', link.blocks);
+    // 	console.log('block', link.blocks);
     //   // if (link.link === args.imgPath || link.link === imgName) {
     //   //   imgLinks.push({ path: mdFile.path, name: mdFile.basename });
     //   // }
     // });
-	  console.log('test', metadata.getFileCache(mdFile)?.blocks ?? '');
+    console.log("test", metadata.getFileCache(mdFile)?.blocks ?? "");
   });
 
   console.log(
@@ -135,12 +134,20 @@ export async function imageInfo(
     const images = getImages(source);
     console.log("images", images);
 
+    const uniqueKey = images[0].link + tags.join("-");
+
     // 在root上渲染React组件
     root.render(
       <AppContext.Provider value={this.app}>
-        <GalleryInfo {...props} />
-        <ImageDisplay image={images[0]} plugin={plugin} />
-		  {tags.map((tag, index) => (<Badge key={index} className='bg-zinc-800 text-zinc-50'>{tag}</Badge>))}
+        <div key={uniqueKey}>
+          <GalleryInfo {...props} />
+          <ImageDisplay image={images[0]} plugin={plugin} />
+          {tags.map((tag, index) => (
+            <Badge key={index} className="bg-zinc-800 text-zinc-50">
+              {tag}
+            </Badge>
+          ))}
+        </div>
       </AppContext.Provider>
     );
 
