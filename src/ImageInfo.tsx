@@ -19,7 +19,6 @@ import {
   EXTRACT_COLORS_OPTIONS,
   GALLERY_INFO_USAGE,
   OB_GALLERY_INFO,
-  VIDEO_REGEX,
 } from "./constants";
 
 export async function imageInfo(

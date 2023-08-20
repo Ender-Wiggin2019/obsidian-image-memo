@@ -62,6 +62,12 @@ const GalleryInfo: React.FC<GalleryInfoProps> = ({
           <div className="gallery-info-section-value">{size}</div>
         </div>
       )}
+		{!infoList.includes("date") && (
+			<div className="gallery-info-section">
+				<span className="gallery-info-section-label">Date</span>
+				<div className="gallery-info-section-value">{date}</div>
+			</div>
+		)}
       {/*...*/}
       {/*{frontmatter && Object.keys(frontmatter).map(*/}
       {/*	(yaml) =>*/}
