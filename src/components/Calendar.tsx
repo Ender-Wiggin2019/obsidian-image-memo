@@ -77,7 +77,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
       }
     }
 
-	console.log('debug: calendar dates', d)
+    console.log("debug: calendar dates", d);
 
     return result;
   }

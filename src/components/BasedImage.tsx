@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { ImageLink } from "../types";
-import { AppContext } from "../utils/AppContext";
+import { AppContext, useApp } from "../utils/AppContext";
 import JournalingPlugin from "../main";
+import { usePlugin } from "../utils/pluginContext";
 
 type ImageDisplayProps = {
   image: ImageLink;
-  // parent: HTMLElement;
-  // sourcePath?: string;
-  plugin?: JournalingPlugin;
 };
 
-export const ImageDisplay: React.FC<ImageDisplayProps> = ({
-  image,
-  plugin,
-}) => {
-  const app = useContext(AppContext);
+export const BasedImage: React.FC<ImageDisplayProps> = ({ image }) => {
+  const app = useApp();
+  const plugin = usePlugin();
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -34,9 +30,11 @@ export const ImageDisplay: React.FC<ImageDisplayProps> = ({
       if (imgRef.current) {
         imgRef.current.src = image.link;
       }
-    } // 如果是 'placeholder'，你可以按需求处理
+    }
   }, [image, plugin, app]);
 
-  console.log("imgRef", imgRef);
-  return <img ref={imgRef} alt="Displayed Image" />;
+  // console.log("imgRef", imgRef);
+  return (
+    <img ref={imgRef} alt="Displayed Image" className="art-picture-frame" />
+  );
 };
