@@ -24,6 +24,30 @@ export interface IJournalingTags {
   dates: IJournalingDailyImages[];
 }
 
+export interface IJournalingImage {
+  name: string; // the image name
+  imageLink: ImageLink;
+  path: string; // the image path
+  extension: string; // the image extension (jpg, png, etc.)
+  size: number; // the image size in MB
+  dimensions: HTMLImageElement | null; // width and height of the image
+  date: string; // the image date
+  tagList: string[]; // the image tags
+  colorList: { hex: string }[]; // the image colors
+  rating?: number; // the image rating
+  description?: string; // the image description
+  showDescription?: boolean; // whether to show the image description
+  imageType?: ImageType; // the image type (screenshot, photo, etc.)
+  showList?: string[]; // determines whether to show the labels
+}
+
+export enum ImageType {
+  DEFAULT = "default",
+  ART = "art",
+  PHOTO = "photo",
+  REVIEW = "review",
+}
+
 export interface IDot {
   isFilled: boolean;
 }

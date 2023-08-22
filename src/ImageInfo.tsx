@@ -2,24 +2,22 @@ import type { Vault, MetadataCache, WorkspaceLeaf } from "obsidian";
 import { MarkdownRenderer, TFile, getAllTags } from "obsidian";
 import JournalingPlugin from "./main";
 import { extractColors } from "extract-colors";
-import { InfoBlockArgs } from "./types";
-import GalleryInfo, { GalleryInfoProps } from "./components/GalleryInfo";
-import { getImageResources, getImgInfo } from "./utils";
+import { IJournalingImage, ImageType } from "./types";
+import JournalingImage, {
+  GalleryInfoProps,
+} from "./components/JournalingImage";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import DiceRoller from "./components/DicerRoller";
-import ReactDOM from "react-dom";
 import { getImages } from "./source_process/GetImages";
 import { AppContext } from "./utils/AppContext";
-import { ImageDisplay } from "./components/ImageDisplay";
 import { getTags } from "./source_process/GetTags";
 import { Badge } from "./ui/badge";
 import {
   EXTENSIONS,
   EXTRACT_COLORS_OPTIONS,
-  GALLERY_INFO_USAGE,
   OB_GALLERY_INFO,
 } from "./constants";
+import { PluginContext } from "./utils/pluginContext";
 
 export async function imageInfo(
   source: string,
@@ -32,24 +30,63 @@ export async function imageInfo(
   const images = getImages(source);
   const tags = getTags(source);
 
-  const args: InfoBlockArgs = {
-    imgPath: "",
-    ignoreInfo: "",
+  // init
+  const props: IJournalingImage = {
+    name: "",
+    imageLink: { type: "local", link: "" },
+    path: "",
+    extension: "",
+    size: 0,
+    dimensions: null,
+    date: "",
+    tagList: [],
+    colorList: [],
+    rating: 0,
+    description: "",
+    showDescription: true,
+    imageType: ImageType.DEFAULT,
+    showList: [],
   };
 
   // get the arguments
-  source.split("\n").map((e) => {
-    if (e) {
-      const param = e.trim().split("=");
-      (args as any)[param[0]] = param[1]?.trim();
+  source.split("\n").map((line) => {
+    if (line && line.indexOf("=") > 0) {
+      const param = line.trim().split("=");
+      const key = param[0].trim();
+      let value = param[1]?.trim();
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.slice(1, -1);
+      }
+      if (key === "show") {
+        props["showDescription"] = value === "true";
+      } else if (key === "desc") {
+        props["description"] = value;
+      } else if (key === "name") {
+        props["name"] = value;
+      } else if (key === "rating") {
+        props["rating"] = parseInt(value);
+      } else if (key === "type") {
+        const imageType = Object.values(ImageType).some(
+          (type) => type === value.toLowerCase()
+        )
+          ? (value.toLowerCase() as ImageType)
+          : ImageType.DEFAULT;
+        props["imageType"] = imageType;
+      } else if (key === "showList") {
+        const showList = value.split(",");
+        props["showList"] = showList;
+      } else {
+        // props[key] = value;
+        // TODO: should add some setting for date
+      }
     }
   });
 
-  const infoList = args.ignoreInfo
-    .split(";")
-    .map((param) => param.trim().toLowerCase())
-    .filter((e) => e !== "");
-  const imgName = images[0].link.split("/").slice(-1)[0];
+  // const showList = args.ignoreInfo
+  //   .split(";")
+  //   .map((param) => param.trim().toLowerCase())
+  //   .filter((e) => e !== "");
+  // const imgName = images[0].link.split("/").slice(-1)[0];
   const elCanvas = el.createDiv({
     cls: "ob-gallery-info-block",
     attr: { style: `width: 100%; height: auto; float: left` },
@@ -79,43 +116,21 @@ export async function imageInfo(
 
   measureEl.src = imgURL;
 
-  // Handle disabled img info functionality or missing info block
-  // let imgInfo = await getImgInfo(imgTFile.path, vault, metadata, plugin, false);
-  // const imgTags = null;
-
-  // const imgLinks: { path: string; name: string }[] = [];
-  // get all files!
-  console.log("length", vault.getMarkdownFiles().length);
-  vault.getMarkdownFiles().forEach((mdFile) => {
-    // metadata.getFileCache(mdFile)?.links?.forEach((link) => {
-    // 	console.log('block', link.blocks);
-    //   // if (link.link === args.imgPath || link.link === imgName) {
-    //   //   imgLinks.push({ path: mdFile.path, name: mdFile.basename });
-    //   // }
-    // });
-    console.log("test", metadata.getFileCache(mdFile)?.blocks ?? "");
-  });
-
-  console.log(
-    "imgTFile",
-    imgTFile,
-    imgTFile instanceof TFile && EXTENSIONS.contains(imgTFile.extension)
-  );
   if (imgTFile instanceof TFile && EXTENSIONS.contains(imgTFile.extension)) {
-    const props: GalleryInfoProps = {
-      name: imgTFile.basename,
-      path: imgTFile.path,
-      extension: imgTFile.extension,
-      date: new Date(imgTFile.stat.ctime).toString(),
-      dimensions: measureEl,
-      size: imgTFile.stat.size / 1000000,
-      colorList: colors,
-      tagList: tags,
-      // isVideo: isVideo,
-      // imgLinks: imgLinks,
-      // frontmatter: imgInfoCache.frontmatter,
-      infoList: infoList,
-    };
+    // const props: GalleryInfoProps = {
+    //   name: imgTFile.basename,
+    //   path: imgTFile.path,
+    //   extension: imgTFile.extension,
+    //   date: new Date(imgTFile.stat.ctime).toString(),
+    //   dimensions: measureEl,
+    //   size: imgTFile.stat.size / 1000000,
+    //   colorList: colors,
+    //   tagList: tags,
+    // 	description?: string; // the image description
+    // 	showDescription?: boolean; // whether to show the image description
+    // 	imageType?: ImageType; // the image type (screenshot, photo, etc.)
+    //   showList: showList,
+    // };
     // const reactComponent = React.createElement(GalleryInfo, props);
     //
     // // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,6 +147,17 @@ export async function imageInfo(
     //
     // console.log('Object.keys(imgResources)[0]', Object.keys(imgResources)[0]);
     const images = getImages(source);
+
+    // update props
+    props.name = props.name.length > 0 ? props.name : imgTFile.basename;
+    props.imageLink = images[0];
+    props.path = imgTFile.path;
+    props.extension = imgTFile.extension;
+    props.date = new Date(imgTFile.stat.ctime).toString();
+    props.dimensions = measureEl;
+    props.size = imgTFile.stat.size / 1000000;
+    props.colorList = colors;
+    props.tagList = tags;
     console.log("images", images);
 
     const uniqueKey = images[0].link + tags.join("-");
@@ -139,15 +165,18 @@ export async function imageInfo(
     // 在root上渲染React组件
     root.render(
       <AppContext.Provider value={this.app}>
-        <div key={uniqueKey}>
-          <GalleryInfo {...props} />
-          <ImageDisplay image={images[0]} plugin={plugin} />
-          {tags.map((tag, index) => (
-            <Badge key={index} className="bg-zinc-800 text-zinc-50">
-              {tag}
-            </Badge>
-          ))}
-        </div>
+        <PluginContext.Provider value={plugin}>
+          <div key={uniqueKey}>
+            {/*<ImageDisplay image={images[0]}/>*/}
+            <JournalingImage {...props} />
+            {/*<ImageDisplay image={images[0]} plugin={plugin} />*/}
+            {/*{tags.map((tag, index) => (*/}
+            {/*  <Badge key={index} className="bg-zinc-800 text-zinc-50">*/}
+            {/*    {tag}*/}
+            {/*  </Badge>*/}
+            {/*))}*/}
+          </div>
+        </PluginContext.Provider>
       </AppContext.Provider>
     );
 
@@ -164,7 +193,7 @@ export async function imageInfo(
     // 		isVideo: isVideo,
     // 		imgLinks: imgLinks,
     // 		frontmatter: imgInfoCache.frontmatter,
-    // 		infoList: infoList
+    // 		showList: showList
     // 	},
     // 	target: elCanvas
     // });
@@ -179,7 +208,7 @@ export async function imageInfo(
         .getRightLeaf(false)
         .setViewState({ type: OB_GALLERY_INFO });
       workspace.revealLeaf(await workspace.getLeavesOfType(OB_GALLERY_INFO)[0]);
-      const infoView = workspace.getLeavesOfType(OB_GALLERY_INFO)[0]?.view;
+      // const infoView = workspace.getLeavesOfType(OB_GALLERY_INFO)[0]?.view;
       // TODO
       // if (infoView instanceof GalleryInfoView) {
       // 	infoView.infoFile = imgInfo;
