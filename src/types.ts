@@ -34,16 +34,18 @@ export interface IJournalingImage {
   date: string; // the image date
   tagList: string[]; // the image tags
   colorList: { hex: string }[]; // the image colors
+  rating?: number; // the image rating
   description?: string; // the image description
   showDescription?: boolean; // whether to show the image description
   imageType?: ImageType; // the image type (screenshot, photo, etc.)
-  infoList?: string[];
+  showList?: string[]; // determines whether to show the labels
 }
 
 export enum ImageType {
   DEFAULT = "default",
   ART = "art",
   PHOTO = "photo",
+  REVIEW = "review",
 }
 
 export interface IDot {

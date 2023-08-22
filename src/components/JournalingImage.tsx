@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import classNames from "classnames";
 import { IJournalingImage, ImageType } from "../types";
 import { BasedImage } from "./BasedImage";
 import { Badge } from "../ui/badge";
 import BasedDesc from "./BasedDesc";
+import FrameDesc from "./FrameDesc";
+import ReviewDesc from "./desc/ReviewDesc";
 
 const JournalingImage: React.FC<IJournalingImage> = (props) => {
   const [width, setWidth] = useState<number | null>(null);
@@ -16,13 +17,28 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
     }
   }, [props.dimensions]);
 
-  // console.log("infoList", infoList);
+  // console.log("showList", showList);
+  if (props.imageType === ImageType.REVIEW) {
+    return (
+      <div className="w-full place-items-center font-mono">
+        <div className="bg-zinc-800 rounded-md shadow-lg">
+          <div className="md:flex px-4 py-4 gap-4 leading-none max-w-4xl">
+            <div className="flex-none">
+              <BasedImage image={props.imageLink} imageType={props.imageType} />
+            </div>
+            <ReviewDesc {...props} />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="gallery-info-container">
       {/*<div className='art-picture-frame'>*/}
-      <div className="flex flex-row justify-center gap-4 mx-5">
-        <BasedImage image={props.imageLink} />
-        <BasedDesc {...props} />
+      <div className="flex flex-col lg:flex-row justify-start gap-4 mx-5">
+        <BasedImage image={props.imageLink} imageType={props.imageType} />
+        {/*<BasedDesc {...props} />*/}
+        <FrameDesc {...props} />
       </div>
       {/*	???*/}
       {/*</div>*/}
@@ -31,31 +47,31 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
           {tag}
         </Badge>
       ))}
-      {!props.infoList.includes("name") && (
+      {!props.showList.includes("name") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label text-red-500">Name</span>
           <div className="gallery-info-section-value">{props.name}</div>
         </div>
       )}
-      {!props.infoList.includes("path") && (
+      {!props.showList.includes("path") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label">Path</span>
           <div className="gallery-info-section-value">{props.path}</div>
         </div>
       )}
-      {!props.infoList.includes("size") && (
+      {!props.showList.includes("size") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label">Size</span>
           <div className="gallery-info-section-value">{props.size}</div>
         </div>
       )}
-      {!props.infoList.includes("date") && (
+      {!props.showList.includes("date") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label">Date</span>
           <div className="gallery-info-section-value">{props.date}</div>
         </div>
       )}
-      {!props.infoList.includes("description") && (
+      {!props.showList.includes("description") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label">Description</span>
           <div className="gallery-info-section-value">{props.description}</div>
@@ -65,7 +81,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
       {/*{frontmatter && Object.keys(frontmatter).map(*/}
       {/*	(yaml) =>*/}
       {/*		yaml !== "position" &&*/}
-      {/*		!props.infoList.includes(yaml) && (*/}
+      {/*		!props.showList.includes(yaml) && (*/}
       {/*			<div className="gallery-info-section">*/}
       {/*				<span className="gallery-info-section-label">{yaml}</span>*/}
       {/*				<div className="gallery-info-section-value">*/}
@@ -74,7 +90,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
       {/*			</div>*/}
       {/*		)*/}
       {/*)}*/}
-      {!props.infoList.includes("palette") && props.colorList && (
+      {!props.showList.includes("palette") && props.colorList && (
         <div className="gallery-info-section mod-tags">
           <span className="gallery-info-section-label">Palette</span>
           <div className="gallery-info-section-value">

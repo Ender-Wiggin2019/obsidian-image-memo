@@ -4,8 +4,9 @@ import { IJournalingImage, ImageType } from "../types";
 import { usePlugin } from "../utils/pluginContext";
 import { BasedImage } from "./BasedImage";
 import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
 
-const BasedDesc: React.FC<IJournalingImage> = (props) => {
+const FrameDesc: React.FC<IJournalingImage> = (props) => {
   const [width, setWidth] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);
 
@@ -20,7 +21,7 @@ const BasedDesc: React.FC<IJournalingImage> = (props) => {
   return (
     <div className="art-picture-frame-desc flex flex-col p-4 h-3/4">
       {props.name && (
-        <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+        <h2 className="text-zinc-900 mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
           {props.name}
         </h2>
       )}
@@ -32,16 +33,9 @@ const BasedDesc: React.FC<IJournalingImage> = (props) => {
         ))}
       </div>
       {props.description && props.description.length > 0 && (
-        <p className="leading-7 [&:not(:first-child)]:mt-6">
-          {props.description}
-        </p>
+        <p className="leading-7">{props.description}</p>
       )}
-      {!props.showList.includes("name") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label text-red-500">Name</span>
-          <div className="gallery-info-section-value">{props.name}</div>
-        </div>
-      )}
+      <Separator className="bg-zinc-300" />
       {!props.showList.includes("path") && (
         <div className="gallery-info-section">
           <span className="gallery-info-section-label">Path</span>
@@ -60,25 +54,6 @@ const BasedDesc: React.FC<IJournalingImage> = (props) => {
           <div className="gallery-info-section-value">{props.date}</div>
         </div>
       )}
-      {!props.showList.includes("description") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label">Description</span>
-          <div className="gallery-info-section-value">{props.description}</div>
-        </div>
-      )}
-      {/*...*/}
-      {/*{frontmatter && Object.keys(frontmatter).map(*/}
-      {/*	(yaml) =>*/}
-      {/*		yaml !== "position" &&*/}
-      {/*		!props.showList.includes(yaml) && (*/}
-      {/*			<div className="gallery-info-section">*/}
-      {/*				<span className="gallery-info-section-label">{yaml}</span>*/}
-      {/*				<div className="gallery-info-section-value">*/}
-      {/*					{frontmatter[yaml]}*/}
-      {/*				</div>*/}
-      {/*			</div>*/}
-      {/*		)*/}
-      {/*)}*/}
       {!props.showList.includes("palette") && props.colorList && (
         <div className="gallery-info-section mod-tags">
           <span className="gallery-info-section-label">Palette</span>
@@ -99,4 +74,4 @@ const BasedDesc: React.FC<IJournalingImage> = (props) => {
   );
 };
 
-export default BasedDesc;
+export default FrameDesc;

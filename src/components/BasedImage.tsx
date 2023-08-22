@@ -1,14 +1,18 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { ImageLink } from "../types";
-import { AppContext, useApp } from "../utils/AppContext";
-import JournalingPlugin from "../main";
+import React, { useEffect, useRef } from "react";
+import { ImageLink, ImageType } from "../types";
+import { useApp } from "../utils/AppContext";
 import { usePlugin } from "../utils/pluginContext";
+import { cn } from "../lib/utils";
 
 type ImageDisplayProps = {
   image: ImageLink;
+  imageType: ImageType;
 };
 
-export const BasedImage: React.FC<ImageDisplayProps> = ({ image }) => {
+export const BasedImage: React.FC<ImageDisplayProps> = ({
+  image,
+  imageType,
+}) => {
   const app = useApp();
   const plugin = usePlugin();
   const imgRef = useRef<HTMLImageElement>(null);
@@ -34,7 +38,23 @@ export const BasedImage: React.FC<ImageDisplayProps> = ({ image }) => {
   }, [image, plugin, app]);
 
   // console.log("imgRef", imgRef);
+  if (imageType === ImageType.REVIEW) {
+    return (
+      <img
+        ref={imgRef}
+        alt="Displayed Image"
+        className="review-picture h-auto rounded-md shadow-2xl shadow-lg"
+      />
+    );
+  }
   return (
-    <img ref={imgRef} alt="Displayed Image" className="art-picture-frame" />
+    <img
+      ref={imgRef}
+      alt="Displayed Image"
+      className={cn(
+        { "art-picture-frame": imageType === ImageType.ART },
+        { "photo-picture": imageType === ImageType.PHOTO }
+      )}
+    />
   );
 };

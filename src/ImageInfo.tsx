@@ -41,10 +41,11 @@ export async function imageInfo(
     date: "",
     tagList: [],
     colorList: [],
+    rating: 0,
     description: "",
     showDescription: true,
     imageType: ImageType.DEFAULT,
-    infoList: [],
+    showList: [],
   };
 
   // get the arguments
@@ -60,6 +61,10 @@ export async function imageInfo(
         props["showDescription"] = value === "true";
       } else if (key === "desc") {
         props["description"] = value;
+      } else if (key === "name") {
+        props["name"] = value;
+      } else if (key === "rating") {
+        props["rating"] = parseInt(value);
       } else if (key === "type") {
         const imageType = Object.values(ImageType).some(
           (type) => type === value.toLowerCase()
@@ -67,6 +72,9 @@ export async function imageInfo(
           ? (value.toLowerCase() as ImageType)
           : ImageType.DEFAULT;
         props["imageType"] = imageType;
+      } else if (key === "showList") {
+        const showList = value.split(",");
+        props["showList"] = showList;
       } else {
         // props[key] = value;
         // TODO: should add some setting for date
@@ -74,7 +82,7 @@ export async function imageInfo(
     }
   });
 
-  // const infoList = args.ignoreInfo
+  // const showList = args.ignoreInfo
   //   .split(";")
   //   .map((param) => param.trim().toLowerCase())
   //   .filter((e) => e !== "");
@@ -121,7 +129,7 @@ export async function imageInfo(
     // 	description?: string; // the image description
     // 	showDescription?: boolean; // whether to show the image description
     // 	imageType?: ImageType; // the image type (screenshot, photo, etc.)
-    //   infoList: infoList,
+    //   showList: showList,
     // };
     // const reactComponent = React.createElement(GalleryInfo, props);
     //
@@ -141,7 +149,7 @@ export async function imageInfo(
     const images = getImages(source);
 
     // update props
-    props.name = imgTFile.basename;
+    props.name = props.name.length > 0 ? props.name : imgTFile.basename;
     props.imageLink = images[0];
     props.path = imgTFile.path;
     props.extension = imgTFile.extension;
@@ -185,7 +193,7 @@ export async function imageInfo(
     // 		isVideo: isVideo,
     // 		imgLinks: imgLinks,
     // 		frontmatter: imgInfoCache.frontmatter,
-    // 		infoList: infoList
+    // 		showList: showList
     // 	},
     // 	target: elCanvas
     // });

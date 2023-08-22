@@ -30,8 +30,16 @@ const TagCalendar: React.FC<TagCalendarProps> = ({ data, until }) => {
   const tags = Object.values(tagData).map((tagEntry) => tagEntry.tag);
   console.log("tags in TagCalendar", tags);
 
-  const values = getTagValues(tagData, selectedTag);
+  // const values = getTagValues(tagData, selectedTag);
 
+  // test
+	until = '2023-08-24';
+	const values = {
+		'2023-08-20': 2,
+		'2023-08-21': 3,
+		'2023-08-22': 3,
+		'2023-08-23': 4
+	};
   console.log("values in TagCalendar", values);
   // const {app} = useApp();
   // const data = getJournalingData();
