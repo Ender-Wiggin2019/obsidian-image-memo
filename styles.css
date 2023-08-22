@@ -542,6 +542,16 @@
 /*		font-feature-settings: "rlig" 1, "calt" 1;*/
 /*	}*/
 /*}*/
+.settings-banner {
+	background-color: var(--background-secondary-alt);
+	border-radius: 4px;
+	margin-bottom: 2em;
+	padding: 1.5em;
+	text-align: left;
+}
+.settings-banner h4 {
+	margin: 0;
+}
 .gallery-info-container {
 	border: 1px solid var(--background-modifier-border);
 	font-size: 14px;

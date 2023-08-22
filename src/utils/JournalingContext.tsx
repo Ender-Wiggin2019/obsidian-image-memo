@@ -29,7 +29,7 @@ export const useJournalingData = (): JournalingDataContextType => {
 };
 
 type JournalingDataProps = {
-  children: React.ReactNode; //👈 children prop typr
+  children: React.ReactNode;
 };
 
 export const JournalingDataProvider: React.FC<JournalingDataProps> = ({
