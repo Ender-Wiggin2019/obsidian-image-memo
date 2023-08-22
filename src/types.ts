@@ -24,6 +24,12 @@ export interface IJournalingTags {
   dates: IJournalingDailyImages[];
 }
 
+export interface ICalendarEntry {
+  count: number;
+  date: string;
+  level: number;
+}
+
 export interface IJournalingImage {
   name: string; // the image name
   imageLink: ImageLink;

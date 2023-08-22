@@ -2,7 +2,7 @@ import React from "react";
 // import Calendar from "react-github-contribution-calendar";
 import Calendar from "./Calendar";
 import { getJournalingData } from "../data/journalingData";
-import { IJournalingData, IJournalingTags } from "../types";
+import { ICalendarEntry, IJournalingData, IJournalingTags } from "../types";
 import {
   Select,
   SelectContent,
@@ -10,37 +10,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+
+import { Tooltip as MuiTooltip } from "@mui/material";
 import { dateIndexToTagIndex } from "../utils/dateIndexToTagIndex";
+import ActivityCalendar, { Activity, Level } from "react-activity-calendar";
+import { moment } from "obsidian";
+import { Moment } from "moment";
 
 interface TagCalendarProps {
   data: IJournalingData[];
   until: string;
+  onClickDay: (date: Moment, inNewSplit: boolean) => Promise<void>;
 }
 
-const TagCalendar: React.FC<TagCalendarProps> = ({ data, until }) => {
+const TagCalendar: React.FC<TagCalendarProps> = ({
+  data,
+  until,
+  onClickDay,
+}) => {
   // 处理data, 获取每天日记中的图片+标签数量
   const [selectedTag, setSelectedTag] = React.useState("");
   if (data === undefined) {
     return null;
   }
 
-  console.log("data in TagCalendar", data);
+  console.log("onClickDay type", typeof onClickDay);
   const tagData = dateIndexToTagIndex(data);
   console.log("tagData in TagCalendar", tagData);
   const tags = Object.values(tagData).map((tagEntry) => tagEntry.tag);
   console.log("tags in TagCalendar", tags);
 
-  // const values = getTagValues(tagData, selectedTag);
+  const calendarActivities = getCalendarActivitiesByTag(
+    tagData,
+    selectedTag,
+    60
+  ); // TODO: range should be in setting
 
   // test
-	until = '2023-08-24';
-	const values = {
-		'2023-08-20': 2,
-		'2023-08-21': 3,
-		'2023-08-22': 3,
-		'2023-08-23': 4
-	};
-  console.log("values in TagCalendar", values);
+  until = "2023-08-24";
+  console.log("calendarActivities in TagCalendar", calendarActivities);
   // const {app} = useApp();
   // const data = getJournalingData();
   const panelColors = ["#EEEEEE", "#D6E685", "#8CC665", "#44A340", "#1E6823"];
@@ -58,15 +66,23 @@ const TagCalendar: React.FC<TagCalendarProps> = ({ data, until }) => {
           ))}
         </SelectContent>
       </Select>
-      <Calendar
-        values={values}
-        until={until}
-        monthLabelAttributes={""}
-        panelColors={panelColors}
-        weekLabelAttributes={""}
-        panelAttributes={""}
-        onDateClick={(date) => {
-          console.log("Clicked on date:", date, values);
+      <ActivityCalendar
+        data={calendarActivities}
+        renderBlock={(block, activity) => (
+          <MuiTooltip
+            title={`${activity.count} activities on ${activity.date}`}
+          >
+            {block}
+          </MuiTooltip>
+        )}
+        eventHandlers={{
+          onClick: (event) => (activity) => {
+            // alert(JSON.stringify(activity));
+            onClickDay(moment(activity.date), false);
+          },
+          onMouseEnter: (event) => (activity) => {
+            console.log("on mouse enter");
+          },
         }}
       />
     </>
@@ -81,17 +97,25 @@ const TagCalendar: React.FC<TagCalendarProps> = ({ data, until }) => {
     // />
   );
 };
-
-const getTagValues = (
+const getCalendarActivitiesByTag = (
   data: IJournalingTags[],
-  tag: string
-): { [date: string]: number } => {
+  tag: string,
+  range: number
+): Activity[] => {
   const result: { [date: string]: number } = {};
+  const endDate = moment();
+  const startDate = moment().subtract(range, "days");
 
+  let startFlag = 0,
+    endFlag = 0;
+  // Populate the result dictionary as before
   if (tag === "") {
-    // 合并所有标签的数据
     data.forEach((tagEntry) => {
       tagEntry.dates.forEach((dateEntry) => {
+        if (dateEntry.date < startDate || dateEntry.date > endDate) return;
+        else if (dateEntry.date === startDate) startFlag = 1;
+        else if (dateEntry.date === endDate) endFlag = 1;
+
         const dateString = dateEntry.date.format("YYYY-MM-DD");
         if (result[dateString]) {
           result[dateString] += dateEntry.count;
@@ -101,7 +125,6 @@ const getTagValues = (
       });
     });
   } else {
-    // 返回特定标签的数据
     const tagEntry = data.find((t) => t.tag === tag);
     if (tagEntry) {
       tagEntry.dates.forEach((dateEntry) => {
@@ -111,7 +134,39 @@ const getTagValues = (
     }
   }
 
-  return result;
+  // Calculate the maximum count value
+  const maxCount = Math.max(...Object.values(result));
+
+  // Convert the dictionary into the desired output format
+  const activities: Activity[] = Object.entries(result).map(([date, count]) => {
+    let level: Level = 0;
+    const ratio = count / maxCount;
+
+    if (ratio > 0 && ratio <= 0.25) level = 1;
+    else if (ratio > 0.25 && ratio <= 0.5) level = 2;
+    else if (ratio > 0.5 && ratio <= 0.75) level = 3;
+    else if (ratio > 0.75 && ratio <= 1) level = 4;
+
+    return { date, count, level };
+  });
+  if (!startFlag) {
+    activities.unshift({
+      date: startDate.format("YYYY-MM-DD"),
+      count: 0,
+      level: 0,
+    });
+  }
+  if (!endFlag) {
+    activities.push({
+      date: endDate.format("YYYY-MM-DD"),
+      count: 0,
+      level: 0,
+    });
+  }
+
+  console.log("activities", activities, endFlag);
+
+  return activities;
 };
 
 export default TagCalendar;
