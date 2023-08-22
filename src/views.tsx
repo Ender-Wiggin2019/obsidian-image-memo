@@ -5,12 +5,17 @@ import { createRoot } from "react-dom/client";
 import React from "react";
 import TagCalendar from "./components/TagCalendar";
 import ReactDOM from "react-dom";
-import { getDateFromFile } from "obsidian-daily-notes-interface";
+import {
+  getAllDailyNotes,
+  getDailyNote,
+  getDateFromFile,
+} from "obsidian-daily-notes-interface";
 import { getJournalingData } from "./data/journalingData";
 import JournalingPlugin from "./main";
 import { generateDateRange } from "./lib/utils";
 import { JournalingDataProvider } from "./utils/JournalingContext";
 import { IJournalingData } from "./types";
+import { Moment } from "moment";
 
 export default class JournalingView extends ItemView {
   plugin: JournalingPlugin;
@@ -28,6 +33,8 @@ export default class JournalingView extends ItemView {
     this.onFileDeleted = this.onFileDeleted.bind(this);
     this.onFileModified = this.onFileModified.bind(this);
     this.onFileOpen = this.onFileOpen.bind(this);
+
+    this.openOrCreateDailyNote = this.openOrCreateDailyNote.bind(this);
 
     // this.registerEvent(
     // // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -123,11 +130,38 @@ export default class JournalingView extends ItemView {
     }
   }
 
+  async openOrCreateDailyNote(
+    date: Moment,
+    inNewSplit: boolean
+  ): Promise<void> {
+    const { workspace } = this.app;
+    const existingFile = getDailyNote(date, getAllDailyNotes());
+    if (!existingFile) {
+      // just return
+      // TODO: add an alert?
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mode = (this.app.vault as any).getConfig("defaultViewMode");
+    const leaf = inNewSplit
+      ? workspace.splitActiveLeaf()
+      : workspace.getUnpinnedLeaf();
+    await leaf.openFile(existingFile, { active: true, mode });
+
+    // FIXME: I haven't set activeFile yet
+    // activeFile.setFile(existingFile);
+  }
+
   renderReactComponent() {
     this.root.render(
       <React.StrictMode>
         <JournalingDataProvider>
-          <TagCalendar data={this.journalingData} until={"2023-08-31"} />
+          <TagCalendar
+            data={this.journalingData}
+            until={"2023-08-31"}
+            onClickDay={this.openOrCreateDailyNote}
+          />
         </JournalingDataProvider>
       </React.StrictMode>
     );

@@ -61,6 +61,7 @@ const FrameDesc: React.FC<IJournalingImage> = (props) => {
             <div style={{ width: "max-content" }}>
               {props.colorList.map((color) => (
                 <div
+                  key={color.hex}
                   className="gallery-info-color"
                   aria-label={color.hex}
                   style={{ backgroundColor: color.hex }}

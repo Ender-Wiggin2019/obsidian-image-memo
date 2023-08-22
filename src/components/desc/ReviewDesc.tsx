@@ -12,8 +12,8 @@ const ReviewDesc: React.FC<IJournalingImage> = (props) => {
       <Separator className="bg-zinc-600" />
       <div className="text-md flex justify-start my-2 gap-2">
         <span className="">
-          {props.tagList.map((tag, index) => (
-            <span>{tag.toString()} | </span>
+          {props.tagList.map((tag) => (
+            <span key={tag}>{tag.toString()} | </span>
           ))}
         </span>
         {"   "}
@@ -56,6 +56,7 @@ const ReviewDesc: React.FC<IJournalingImage> = (props) => {
           <div style={{ width: "max-content" }}>
             {props.colorList.map((color) => (
               <div
+                key={color.hex}
                 className="gallery-info-color"
                 aria-label={color.hex}
                 style={{ backgroundColor: color.hex }}
