@@ -38,6 +38,8 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
   const tagData = dateIndexToTagIndex(data);
   console.log("tagData in TagCalendar", tagData);
   const tags = Object.values(tagData).map((tagEntry) => tagEntry.tag);
+  tags.unshift("all");
+
   console.log("tags in TagCalendar", tags);
 
   const calendarActivities = getCalendarActivitiesByTag(
@@ -68,13 +70,18 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
       </Select>
       <ActivityCalendar
         data={calendarActivities}
-        renderBlock={(block, activity) => (
+		blockSize={18}
+		hideColorLegend={true}
+		hideTotalCount={true}
+		renderBlock={(block, activity) => {
+			if (activity.count === 0) return block;
+			else return (
           <MuiTooltip
-            title={`${activity.count} activities on ${activity.date}`}
+            title={`${activity.count} tags on ${activity.date}`}
           >
             {block}
           </MuiTooltip>
-        )}
+        )}}
         eventHandlers={{
           onClick: (event) => (activity) => {
             // alert(JSON.stringify(activity));
@@ -109,7 +116,7 @@ const getCalendarActivitiesByTag = (
   let startFlag = 0,
     endFlag = 0;
   // Populate the result dictionary as before
-  if (tag === "") {
+  if (tag === "" || tag === "all") {
     data.forEach((tagEntry) => {
       tagEntry.dates.forEach((dateEntry) => {
         if (dateEntry.date < startDate || dateEntry.date > endDate) return;
@@ -142,7 +149,8 @@ const getCalendarActivitiesByTag = (
     let level: Level = 0;
     const ratio = count / maxCount;
 
-    if (ratio > 0 && ratio <= 0.25) level = 1;
+	if (maxCount <= 4) level = count - 1 as Level;
+    else if (ratio > 0 && ratio <= 0.25) level = 1;
     else if (ratio > 0.25 && ratio <= 0.5) level = 2;
     else if (ratio > 0.5 && ratio <= 0.75) level = 3;
     else if (ratio > 0.75 && ratio <= 1) level = 4;
