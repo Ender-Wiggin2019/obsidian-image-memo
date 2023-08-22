@@ -1,21 +1,19 @@
-import type { Vault, MetadataCache, WorkspaceLeaf } from "obsidian";
-import { MarkdownRenderer, TFile, getAllTags } from "obsidian";
+import type { MetadataCache, Vault } from "obsidian";
+import { MarkdownRenderer, TFile } from "obsidian";
 import JournalingPlugin from "./main";
 import { extractColors } from "extract-colors";
 import { IJournalingImage, ImageType } from "./types";
-import JournalingImage, {
-  GalleryInfoProps,
-} from "./components/JournalingImage";
+import JournalingImage from "./components/JournalingImage";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { getImages } from "./source_process/GetImages";
 import { AppContext } from "./utils/AppContext";
 import { getTags } from "./source_process/GetTags";
-import { Badge } from "./ui/badge";
 import {
   EXTENSIONS,
   EXTRACT_COLORS_OPTIONS,
   OB_GALLERY_INFO,
+  PLUGIN_MARKDOWN_USAGE,
 } from "./constants";
 import { PluginContext } from "./utils/pluginContext";
 
@@ -28,6 +26,7 @@ export async function imageInfo(
 ) {
   // Get all images
   const images = getImages(source);
+  const currentImage = images[0];
   const tags = getTags(source);
 
   // init
@@ -66,15 +65,14 @@ export async function imageInfo(
       } else if (key === "rating") {
         props["rating"] = parseInt(value);
       } else if (key === "type") {
-        const imageType = Object.values(ImageType).some(
+        // get imageType from the enum ImageType
+        props["imageType"] = Object.values(ImageType).some(
           (type) => type === value.toLowerCase()
         )
           ? (value.toLowerCase() as ImageType)
           : ImageType.DEFAULT;
-        props["imageType"] = imageType;
       } else if (key === "showList") {
-        const showList = value.split(",");
-        props["showList"] = showList;
+        props["showList"] = value.split(",");
       } else {
         // props[key] = value;
         // TODO: should add some setting for date
@@ -82,75 +80,24 @@ export async function imageInfo(
     }
   });
 
-  // const showList = args.ignoreInfo
-  //   .split(";")
-  //   .map((param) => param.trim().toLowerCase())
-  //   .filter((e) => e !== "");
-  // const imgName = images[0].link.split("/").slice(-1)[0];
   const elCanvas = el.createDiv({
-    cls: "ob-gallery-info-block",
+    cls: "",
     attr: { style: `width: 100%; height: auto; float: left` },
   });
+  const root = createRoot(elCanvas);
 
-  // let imgTFile = vault.getAbstractFileByPath(args.imgPath);
-  const imgTFile = vault.getAbstractFileByPath(images[0].link);
-  const imgURL = vault.adapter.getResourcePath(images[0].link);
+  const imgTFile = vault.getAbstractFileByPath(currentImage.link);
+  const imgURL = vault.adapter.getResourcePath(currentImage.link);
 
-  // Handle problematic arg
-  // if (!args.imgPath || !imgTFile) {
-  // 	MarkdownRenderer.renderMarkdown(GALLERY_INFO_USAGE, elCanvas, '/', plugin);
-  // 	return;
-  // }
-  // Get image dimensions
-  // if (imgURL.match(VIDEO_REGEX)) {
-  // 	measureEl = document.createElement('video');
-  // 	isVideo = true;
-  // } else {
-  // 	measureEl = new Image();
-  // 	colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
-  // 	isVideo = false;
-  // }
-  // TODO: 只有图片格式
-  const measureEl = new Image();
-  const colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
-
-  measureEl.src = imgURL;
-
+  // local image
   if (imgTFile instanceof TFile && EXTENSIONS.contains(imgTFile.extension)) {
-    // const props: GalleryInfoProps = {
-    //   name: imgTFile.basename,
-    //   path: imgTFile.path,
-    //   extension: imgTFile.extension,
-    //   date: new Date(imgTFile.stat.ctime).toString(),
-    //   dimensions: measureEl,
-    //   size: imgTFile.stat.size / 1000000,
-    //   colorList: colors,
-    //   tagList: tags,
-    // 	description?: string; // the image description
-    // 	showDescription?: boolean; // whether to show the image description
-    // 	imageType?: ImageType; // the image type (screenshot, photo, etc.)
-    //   showList: showList,
-    // };
-    // const reactComponent = React.createElement(GalleryInfo, props);
-    //
-    // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // ReactDOM.render(reactComponent, elCanvas);
+    const measureEl = new Image();
+    const colors = await extractColors(imgURL, EXTRACT_COLORS_OPTIONS);
 
-    const root = createRoot(elCanvas);
-
-    // TODO: TEST
-
-    // const imgResources = getImageResources(imgTFile.path,
-    // 	imgTFile.basename,
-    // 	this.app.vault.getFiles(),
-    // 	this.app.vault.adapter);
-    //
-    // console.log('Object.keys(imgResources)[0]', Object.keys(imgResources)[0]);
-    const images = getImages(source);
-
+    measureEl.src = imgURL;
     // update props
     props.name = props.name.length > 0 ? props.name : imgTFile.basename;
-    props.imageLink = images[0];
+    props.imageLink = currentImage;
     props.path = imgTFile.path;
     props.extension = imgTFile.extension;
     props.date = new Date(imgTFile.stat.ctime).toString();
@@ -160,61 +107,52 @@ export async function imageInfo(
     props.tagList = tags;
     console.log("images", images);
 
-    const uniqueKey = images[0].link + tags.join("-");
+    const uniqueKey = currentImage.link + tags.join("-");
 
     // 在root上渲染React组件
     root.render(
       <AppContext.Provider value={this.app}>
         <PluginContext.Provider value={plugin}>
           <div key={uniqueKey}>
-            {/*<ImageDisplay image={images[0]}/>*/}
+            {/*<ImageDisplay image={currentImage}/>*/}
             <JournalingImage {...props} />
-            {/*<ImageDisplay image={images[0]} plugin={plugin} />*/}
-            {/*{tags.map((tag, index) => (*/}
-            {/*  <Badge key={index} className="bg-zinc-800 text-zinc-50">*/}
-            {/*    {tag}*/}
-            {/*  </Badge>*/}
-            {/*))}*/}
           </div>
         </PluginContext.Provider>
       </AppContext.Provider>
     );
+  } else if (currentImage.type === "external") {
+    const NameRegex = /([^/]+)\.([a-zA-Z0-9]+)$/; // extract name and extension
+    const match = currentImage.link.match(NameRegex);
 
-    // new GalleryInfo({
-    // 	props: {
-    // 		name: imgTFile.basename,
-    // 		path: imgTFile.path,
-    // 		extension: imgTFile.extension,
-    // 		date: new Date(imgTFile.stat.ctime),
-    // 		dimensions: measureEl,
-    // 		size: imgTFile.stat.size / 1000000,
-    // 		colorList: colors,
-    // 		tagList: imgTags,
-    // 		isVideo: isVideo,
-    // 		imgLinks: imgLinks,
-    // 		frontmatter: imgInfoCache.frontmatter,
-    // 		showList: showList
-    // 	},
-    // 	target: elCanvas
-    // });
+    // update props
+    props.name = props.name.length > 0 ? props.name : match[0];
+    props.imageLink = currentImage;
+    props.path = currentImage.link;
+    props.extension = match[1];
+    props.dimensions = null;
+    props.colorList = [];
+    props.tagList = tags;
+
+    const uniqueKey = currentImage.link + tags.join("-");
+
+    // 在root上渲染React组件
+    root.render(
+      <AppContext.Provider value={this.app}>
+        <PluginContext.Provider value={plugin}>
+          <div key={uniqueKey}>
+            {/*<ImageDisplay image={currentImage}/>*/}
+            <JournalingImage {...props} />
+          </div>
+        </PluginContext.Provider>
+      </AppContext.Provider>
+    );
+  } else {
+    MarkdownRenderer.renderMarkdown(
+      PLUGIN_MARKDOWN_USAGE,
+      elCanvas,
+      "/",
+      plugin
+    );
+    return;
   }
-
-  elCanvas.onClickEvent(async (event) => {
-    if (event.button === 2) {
-      // Open image info view in side panel
-      const workspace = plugin.app.workspace;
-      workspace.detachLeavesOfType(OB_GALLERY_INFO);
-      await workspace
-        .getRightLeaf(false)
-        .setViewState({ type: OB_GALLERY_INFO });
-      workspace.revealLeaf(await workspace.getLeavesOfType(OB_GALLERY_INFO)[0]);
-      // const infoView = workspace.getLeavesOfType(OB_GALLERY_INFO)[0]?.view;
-      // TODO
-      // if (infoView instanceof GalleryInfoView) {
-      // 	infoView.infoFile = imgInfo;
-      // 	infoView.editor.setValue(await vault.cachedRead(imgInfo));
-      // 	infoView.render();
-      // }
-    }
-  });
 }

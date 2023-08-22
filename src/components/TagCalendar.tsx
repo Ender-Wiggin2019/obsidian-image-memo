@@ -56,6 +56,30 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
   const panelColors = ["#EEEEEE", "#D6E685", "#8CC665", "#44A340", "#1E6823"];
   return (
     <>
+      <ActivityCalendar
+        data={calendarActivities}
+        blockSize={18}
+        hideColorLegend={true}
+        hideTotalCount={true}
+        renderBlock={(block, activity) => {
+          if (activity.count === 0) return block;
+          else
+            return (
+              <MuiTooltip title={`${activity.count} tags on ${activity.date}`}>
+                {block}
+              </MuiTooltip>
+            );
+        }}
+        eventHandlers={{
+          onClick: (event) => (activity) => {
+            // alert(JSON.stringify(activity));
+            onClickDay(moment(activity.date), false);
+          },
+          onMouseEnter: (event) => (activity) => {
+            console.log("on mouse enter");
+          },
+        }}
+      />
       <Select onValueChange={setSelectedTag} defaultValue={selectedTag}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="tag" />
@@ -68,30 +92,6 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
           ))}
         </SelectContent>
       </Select>
-      <ActivityCalendar
-        data={calendarActivities}
-		blockSize={18}
-		hideColorLegend={true}
-		hideTotalCount={true}
-		renderBlock={(block, activity) => {
-			if (activity.count === 0) return block;
-			else return (
-          <MuiTooltip
-            title={`${activity.count} tags on ${activity.date}`}
-          >
-            {block}
-          </MuiTooltip>
-        )}}
-        eventHandlers={{
-          onClick: (event) => (activity) => {
-            // alert(JSON.stringify(activity));
-            onClickDay(moment(activity.date), false);
-          },
-          onMouseEnter: (event) => (activity) => {
-            console.log("on mouse enter");
-          },
-        }}
-      />
     </>
 
     // <Calendar
@@ -119,9 +119,16 @@ const getCalendarActivitiesByTag = (
   if (tag === "" || tag === "all") {
     data.forEach((tagEntry) => {
       tagEntry.dates.forEach((dateEntry) => {
+        console.log("check", dateEntry.date, dateEntry.date === endDate);
         if (dateEntry.date < startDate || dateEntry.date > endDate) return;
-        else if (dateEntry.date === startDate) startFlag = 1;
-        else if (dateEntry.date === endDate) endFlag = 1;
+        else if (
+          dateEntry.date.format("YYYY-MM-DD") === startDate.format("YYYY-MM-DD")
+        )
+          startFlag = 1;
+        else if (
+          dateEntry.date.format("YYYY-MM-DD") === endDate.format("YYYY-MM-DD")
+        )
+          endFlag = 1;
 
         const dateString = dateEntry.date.format("YYYY-MM-DD");
         if (result[dateString]) {
@@ -149,7 +156,7 @@ const getCalendarActivitiesByTag = (
     let level: Level = 0;
     const ratio = count / maxCount;
 
-	if (maxCount <= 4) level = count - 1 as Level;
+    if (maxCount <= 4) level = (count - 1) as Level;
     else if (ratio > 0 && ratio <= 0.25) level = 1;
     else if (ratio > 0.25 && ratio <= 0.5) level = 2;
     else if (ratio > 0.5 && ratio <= 0.75) level = 3;

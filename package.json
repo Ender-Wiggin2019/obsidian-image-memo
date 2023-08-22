@@ -1,7 +1,7 @@
 {
   "name": "obsidian-journaling",
-  "version": "0.3.20",
-  "description": "Text generator is a handy plugin that helps you generate text content using GPT-3 (OpenAI).",
+  "version": "0.0.1",
+  "description": "TODO",
   "main": "main.js",
   "scripts": {
     "dev": "npm run build:css && node esbuild.config.mjs",

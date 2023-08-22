@@ -35,9 +35,9 @@ export interface IJournalingImage {
   imageLink: ImageLink;
   path: string; // the image path
   extension: string; // the image extension (jpg, png, etc.)
-  size: number; // the image size in MB
+  size?: number; // the image size in MB
   dimensions: HTMLImageElement | null; // width and height of the image
-  date: string; // the image date
+  date?: string; // the image date
   tagList: string[]; // the image tags
   colorList: { hex: string }[]; // the image colors
   rating?: number; // the image rating

@@ -1,7 +1,5 @@
 import { JournalingSettings } from "./types";
 
-export const DEFAULT_WEEK_FORMAT = "gggg-[W]ww";
-export const DEFAULT_WORDS_PER_DOT = 250;
 export const VIEW_TYPE_CALENDAR = "calendar";
 export const VIEW_DISPLAY_TEXT = "Journaling Calendar";
 export const TRIGGER_ON_OPEN = "calendar:open";
@@ -24,55 +22,24 @@ export const OB_GALLERY = "ob-gallery";
 export const OB_GALLERY_INFO = "ob-gallery-info";
 export const galleryIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="images" class="svg-inline--fa fa-images fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M480 416v16c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V176c0-26.51 21.49-48 48-48h16v208c0 44.112 35.888 80 80 80h336zm96-80V80c0-26.51-21.49-48-48-48H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48h384c26.51 0 48-21.49 48-48zM256 128c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-96 144l55.515-55.515c4.686-4.686 12.284-4.686 16.971 0L272 256l135.515-135.515c4.686-4.686 12.284-4.686 16.971 0L512 208v112H160v-48z"></path></svg>`;
 export const gallerySearchIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path></svg>`;
-export const GALLERY_DISPLAY_USAGE = `
+
+export const PLUGIN_MARKDOWN_USAGE = `
 e.g. Input:
 
-\`\`\`type=active-thumb
-path=Weekly
-name=.*Calen
-imgWidth=400
-divWidth=70
-divAlign=left
-reverseOrder=false
-customList=5 10 2 4
 \`\`\`
-
-----
-
-- **Argument Info:**<br>
-- **type:** specify display type. Possible values \`grid\`, \`active-thumb\`<br>
-- **path:** vault path to display images from. Regex expression<br>
-- **imgWidth**: image width in pixels<br>
-- **divWidth**: div container in %<br>
-- **divAlign**: div alignment. Possible values \`left\`, \`right\`<br>
-- **reverseOrder**: reverse the display order of images. Possible values \`true\`, \`false\`<br>
-- **customList**: specify image indexes to display in the passed order<br>
+![](xxx.jpg) (can be pasted as local or remote image)
+name=IMAGE NAME
+type=art
+rating=3
+#tag1 #tag2
+\`\`\`
 
 ----
 
 Please Check Release Notes for plugin changes:<br>
-https://github.com/Darakah/obsidian-gallery#release-notes
+https://github.com/Ender-Wiggin2019/obsidian-journaling
 `;
-export const GALLERY_INFO_USAGE = `
-e.g. Input:
 
-\`\`\`
-imgPath=Resources/Images/Image_example_1.png
-infoList=Name;tags;size;backlinks
-\`\`\`
-
-----
-
-- Block takes a single argument which is the \`PATH\` of the image.
-- Path is the relative path of the file withing the obsidian vault.
-- Make sure the image exists!!
-- It is case sensitive!
-
-----
-
-Please Check Release Notes for plugin changes:<br>
-https://github.com/Darakah/obsidian-gallery#release-notes
-`;
 export const GALLERY_RESOURCES_MISSING = `
 <div class="gallery-resources-alert">
   <strong>Missing or Unspecified Image Information Resources folder</strong>
