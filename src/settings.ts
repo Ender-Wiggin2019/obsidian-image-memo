@@ -8,6 +8,7 @@ import type JournalingPlugin from "./main";
 import { Color } from "react-activity-calendar";
 
 export interface ISettings {
+  // view settings
   dateRange: number;
   fromColor: Color;
   toColor: Color;
@@ -19,7 +20,10 @@ export interface ISettings {
   weekStart: IWeekStartOption;
   localeOverride: ILocaleOverride;
 
-  // localeOverride: ILocaleOverride;
+  // daily notes settings
+  showImage: boolean;
+  showDescription: boolean;
+  notShow: string[];
 }
 
 const weekdays = [
@@ -43,6 +47,9 @@ export const defaultSettings = Object.freeze({
   showWeekdayLabels: false,
   weekStart: "monday",
   localeOverride: "system-default",
+  showImage: true,
+  showDescription: true,
+  notShow: [],
 });
 
 export function appHasPeriodicNotesPluginLoaded(): boolean {
@@ -75,7 +82,7 @@ export class JournalingSettingsTab extends PluginSettingTab {
     }
 
     this.containerEl.createEl("h3", {
-      text: "General Settings",
+      text: "Tag Calendar Settings",
     });
     this.addDateRangeSetting();
     this.addFromColorSetting();
@@ -86,6 +93,14 @@ export class JournalingSettingsTab extends PluginSettingTab {
     this.addHideMonthLabelsSetting();
     this.addShowWeekdayLabelsSetting();
     this.addWeekStartSetting();
+
+    this.containerEl.createEl("h3", {
+      text: "Note Settings",
+    });
+
+    this.addShowImageSetting();
+    this.addShowDescriptionSetting();
+    this.addNotShowSetting();
 
     // if (
     // 	this.plugin.settings.showWeeklyNote &&
@@ -245,6 +260,50 @@ export class JournalingSettingsTab extends PluginSettingTab {
         dropdown.setValue(this.plugin.settings.weekStart);
         dropdown.onChange(async (value) => {
           this.plugin.settings.weekStart = value as IWeekStartOption;
+          await this.plugin.saveSettings();
+        });
+      });
+  }
+
+  addShowImageSetting(): void {
+    new Setting(this.containerEl)
+      .setName("Show image")
+      .setDesc("Show image as default option in notes")
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.showImage);
+        toggle.onChange(async (value) => {
+          this.plugin.settings.showImage = value;
+          await this.plugin.saveSettings();
+        });
+      });
+  }
+
+  addShowDescriptionSetting(): void {
+    new Setting(this.containerEl)
+      .setName("Show description")
+      .setDesc(
+        "Show description as default option in notes. Disable this option may cause some display issues, if you only want to disable some arguments, use 'Not show list' instead"
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.showDescription);
+        toggle.onChange(async (value) => {
+          this.plugin.settings.showDescription = value;
+          await this.plugin.saveSettings();
+        });
+      });
+  }
+
+  addNotShowSetting(): void {
+    new Setting(this.containerEl)
+      .setName("Not show list")
+      .setDesc(
+        "the arguments that you don't want to show in the calendar (divided by ',')"
+      )
+      .addText((textField) => {
+        textField.inputEl.type = "string";
+        textField.setValue(String(this.plugin.settings.notShow.join(",")));
+        textField.onChange(async (value) => {
+          this.plugin.settings.notShow = value.replace(" ", "").split(",");
           await this.plugin.saveSettings();
         });
       });

@@ -31,14 +31,12 @@ export const BasedImage: React.FC<ImageDisplayProps> = ({
         }
       }
     } else if (image.type === "external") {
-      console.log("link3", image.link);
       if (imgRef.current) {
         imgRef.current.src = image.link;
       }
     }
   }, [image, plugin, app]);
 
-  // console.log("imgRef", imgRef);
   if (imageType === ImageType.REVIEW) {
     return (
       <img
@@ -54,6 +52,8 @@ export const BasedImage: React.FC<ImageDisplayProps> = ({
   } else if (imageType === ImageType.PHOTO) {
     return <img ref={imgRef} alt="Displayed Image" />;
   } else {
-    return <img ref={imgRef} alt="Displayed Image" />;
+    return (
+      <img ref={imgRef} alt="Displayed Image" className="default-picture" />
+    );
   }
 };

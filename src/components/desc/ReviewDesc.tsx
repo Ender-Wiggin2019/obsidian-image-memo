@@ -4,7 +4,6 @@ import { Separator } from "../../ui/separator";
 import { StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
 
 const ReviewDesc: React.FC<IJournalingImage> = (props) => {
-  console.log("props", props);
   return (
     // TODO: use text-[length:var(--font-small)] for text
     <div className="flex-col text-[color:var(--text-normal)]">

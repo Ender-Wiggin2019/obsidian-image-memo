@@ -9,26 +9,20 @@ import { Separator } from "../ui/separator";
 import PhotoDesc from "./desc/PhotoDesc";
 
 const JournalingImage: React.FC<IJournalingImage> = (props) => {
-  const [width, setWidth] = useState<number | null>(null);
-  const [height, setHeight] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (props.dimensions) {
-      setWidth(props.dimensions.naturalWidth);
-      setHeight(props.dimensions.naturalHeight);
-    }
-  }, [props.dimensions]);
-
-  // console.log("notShow", notShow);
   if (props.imageType === ImageType.REVIEW) {
     return (
       <div className="w-full place-items-center">
         <div className="review-container">
           <div className="md:flex px-4 py-4 gap-4 leading-none max-w-4xl">
-            <div className="flex-none">
-              <BasedImage image={props.imageLink} imageType={props.imageType} />
-            </div>
-            <ReviewDesc {...props} />
+            {props.showImage && (
+              <div className="flex-none">
+                <BasedImage
+                  image={props.imageLink}
+                  imageType={props.imageType}
+                />
+              </div>
+            )}
+            {props.showDescription && <ReviewDesc {...props} />}
           </div>
         </div>
       </div>
@@ -37,9 +31,11 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
     return (
       <div className="art-picture-frame-container">
         <div className="flex flex-col lg:flex-row justify-start gap-4 mx-1 my-2">
-          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          {props.showImage && (
+            <BasedImage image={props.imageLink} imageType={props.imageType} />
+          )}
           {/*<BasedDesc {...props} />*/}
-          <FrameDesc {...props} />
+          {props.showDescription && <FrameDesc {...props} />}
         </div>
       </div>
     );
@@ -47,7 +43,9 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
     return (
       <div className="photo-container justify-between">
         <div className="photo-picture gap-2">
-          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          {props.showImage && (
+            <BasedImage image={props.imageLink} imageType={props.imageType} />
+          )}
           <div className="text-[color:var(--text-normal)] border-b pb-1 text-2xl font-semibold">
             {props.name}
           </div>
@@ -62,19 +60,23 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
             ))}
           </div>
         </div>
-        <div className="space-x-4 text-sm mx-4">
-          <Separator
-            orientation="vertical"
-            className="bg-[color:var(--text-faint)]"
-          />
-        </div>
-        <div className="flex flex-col">
-          <div className="flex flex-row justify-end">
-            <div className="bg-clip-padding w-8 h-16 p-6 bg-[color:var(--tag-background)] border-4 border-[color:var(--tag-background)] border-dashed" />
+        {props.showDescription && (
+          <div className="space-x-4 text-sm mx-4">
+            <Separator
+              orientation="vertical"
+              className="bg-[color:var(--text-faint)]"
+            />
           </div>
-          {/*<BasedDesc {...props} />*/}
-          <PhotoDesc {...props} />
-        </div>
+        )}
+        {props.showDescription && (
+          <div className="flex flex-col">
+            <div className="flex flex-row justify-end">
+              <div className="bg-clip-padding w-8 h-16 p-6 bg-[color:var(--tag-background)] border-4 border-[color:var(--tag-background)] border-dashed" />
+            </div>
+            {/*<BasedDesc {...props} />*/}
+            <PhotoDesc {...props} />
+          </div>
+        )}
       </div>
     );
   } else {
@@ -82,9 +84,11 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
       <div className="default-container">
         {/*<div className='art-picture-frame'>*/}
         <div className="flex flex-col justify-start gap-4">
-          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          {props.showImage && (
+            <BasedImage image={props.imageLink} imageType={props.imageType} />
+          )}
           {/*<BasedDesc {...props} />*/}
-          <BasedDesc {...props} />
+          {props.showDescription && <BasedDesc {...props} />}
         </div>
       </div>
     );

@@ -1,8 +1,5 @@
-import React, { useEffect } from "react";
-// import Calendar from "react-github-contribution-calendar";
-import Calendar from "./Calendar";
-import { getJournalingData } from "../data/journalingData";
-import { ICalendarEntry, IJournalingData, IJournalingTags } from "../types";
+import React from "react";
+import { IJournalingData, IJournalingTags } from "../types";
 import {
   Select,
   SelectContent,
@@ -16,15 +13,12 @@ import { dateIndexToTagIndex } from "../utils/dateIndexToTagIndex";
 import ActivityCalendar, {
   Activity,
   Color,
-  ColorScale,
   Level,
   ThemeInput,
 } from "react-activity-calendar";
 import { moment } from "obsidian";
 import { Moment } from "moment";
 import { ISettings } from "../settings";
-import { ILocaleOverride, IWeekStartOption } from "obsidian-calendar-ui";
-import { usePlugin } from "../utils/pluginContext";
 
 interface TagCalendarProps {
   data: IJournalingData[];
@@ -37,34 +31,22 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
   settings,
   onClickDay,
 }) => {
-  // 处理data, 获取每天日记中的图片+标签数量
-  // FIXME: plugin 实时更新
-  // const plugin = usePlugin();
-  // console.log('setting3', plugin.settings);
   const [selectedTag, setSelectedTag] = React.useState("");
 
   if (data === undefined) {
     return null;
   }
 
-  console.log("onClickDay type", typeof onClickDay);
   const tagData = dateIndexToTagIndex(data);
-  console.log("tagData in TagCalendar", tagData);
   const tags = Object.values(tagData).map((tagEntry) => tagEntry.tag);
   tags.unshift("all");
-
-  console.log("tags in TagCalendar", tags);
 
   const calendarActivities = getCalendarActivitiesByTag(
     tagData,
     selectedTag,
-    60
-  ); // TODO: range should be in setting
+    settings.dateRange
+  );
 
-  // test
-  console.log("calendarActivities in TagCalendar", calendarActivities);
-  // const {app} = useApp();
-  // const data = getJournalingData();
   const colors: [from: Color, to: Color] = [
     settings.fromColor,
     settings.toColor,
@@ -107,12 +89,8 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
             );
         }}
         eventHandlers={{
-          onClick: (event) => (activity) => {
-            // alert(JSON.stringify(activity));
+          onClick: () => (activity) => {
             onClickDay(moment(activity.date), false);
-          },
-          onMouseEnter: (event) => (activity) => {
-            console.log("on mouse enter");
           },
         }}
       />
@@ -155,7 +133,6 @@ const getCalendarActivitiesByTag = (
   if (tag === "" || tag === "all") {
     data.forEach((tagEntry) => {
       tagEntry.dates.forEach((dateEntry) => {
-        console.log("check", dateEntry.date, dateEntry.date === endDate);
         if (dateEntry.date < startDate || dateEntry.date > endDate) return;
         else if (
           dateEntry.date.format("YYYY-MM-DD") === startDate.format("YYYY-MM-DD")
@@ -214,8 +191,6 @@ const getCalendarActivitiesByTag = (
       level: 0,
     });
   }
-
-  console.log("activities", activities, endFlag);
 
   return activities;
 };

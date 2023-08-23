@@ -1,4 +1,4 @@
-import { App, ItemView, Plugin, WorkspaceLeaf } from "obsidian";
+import { App, Plugin, WorkspaceLeaf } from "obsidian";
 import { imageInfo } from "./ImageInfo";
 import JournalingView from "./views";
 import { defaultSettings, ISettings, JournalingSettingsTab } from "./settings";
@@ -14,9 +14,8 @@ declare global {
 }
 
 export default class JournalingPlugin extends Plugin {
-  // private view: MyReactView;
-  private view: JournalingView;
-  public settings: ISettings;
+  private view: JournalingView; // the view to display tag calendar
+  public settings: ISettings; // settings for the plugin
 
   onunload(): void {
     // unload view
@@ -27,8 +26,6 @@ export default class JournalingPlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.loadSettings();
-    console.log("settings", this.settings);
-    console.log("Loaded Journaling Plugin");
     this.registerView(
       VIEW_TYPE_JOURNALING,
       (leaf: WorkspaceLeaf) => (this.view = new JournalingView(leaf, this))

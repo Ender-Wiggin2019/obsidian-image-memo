@@ -1,7 +1,7 @@
-import { App, ItemView, TFile, WorkspaceLeaf } from "obsidian";
+import { ItemView, TFile, WorkspaceLeaf } from "obsidian";
 // import Calendar from "react-github-contribution-calendar";
 import { VIEW_DISPLAY_TEXT, VIEW_TYPE_JOURNALING } from "./constants";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import TagCalendar from "./components/TagCalendar";
 import ReactDOM from "react-dom";
@@ -18,11 +18,9 @@ import moment, { Moment } from "moment";
 import JournalingPlugin from "./main";
 
 export default class JournalingView extends ItemView {
-  // app: App;
   private plugin: JournalingPlugin;
-  private root: any;
+  private root: Root; // the root for rendering react components
   private journalingData: IJournalingData[] = [];
-  // private calendar: Calendar;
 
   constructor(leaf: WorkspaceLeaf, plugin: JournalingPlugin) {
     super(leaf);
@@ -63,27 +61,11 @@ export default class JournalingView extends ItemView {
   async onOpen() {
     this.root = createRoot(this.containerEl.children[1]);
     await this.updateJournalingData();
-    // 在这个部分处理数据逻辑,并传入到TagCalendar组件中
-    // 需要获取每天日记中的图片+标签数量
-    // 获取的应该是[{date: [{tag: xxx, number: xxx}, {tag: xxx, number: xxx}]}]
-    // TODO: 需要实时更新
-    // const data = await getJournalingData(
-    //   this.app,
-    //   generateDateRange("2023-08-01", "2023-08-20")
-    // );
-    // console.log(data);
-    // const values = {
-    //   "2016-06-23": 1,
-    //   "2016-06-26": 2,
-    //   "2016-06-27": 3,
-    //   "2016-06-28": 4,
-    //   "2016-06-29": 4,
-    // };
-    await this.updateJournalingData();
   }
 
   async onClose() {
-    ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+    // ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+    this.root.unmount();
   }
 
   async updateJournalingData() {
@@ -98,9 +80,7 @@ export default class JournalingView extends ItemView {
         )
       )) || [];
 
-    // console.log('journalingData', this.journalingData);
-
-    // 更新React组件
+    // update the react component
     this.renderReactComponent();
   }
 
@@ -153,7 +133,6 @@ export default class JournalingView extends ItemView {
   }
 
   renderReactComponent() {
-    console.log("settings2", this.plugin.settings);
     this.root.render(
       <React.StrictMode>
         <JournalingDataProvider>

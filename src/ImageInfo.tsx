@@ -25,6 +25,7 @@ export async function imageInfo(
   plugin: JournalingPlugin
 ) {
   // Get all images
+  const settings = plugin.settings;
   const images = getImages(source);
   const currentImage = images[0];
   const tags = getTags(source);
@@ -42,9 +43,10 @@ export async function imageInfo(
     colorList: [],
     rating: 0,
     description: "",
-    showDescription: true,
+    showImage: settings.showImage,
+    showDescription: settings.showDescription,
     imageType: ImageType.DEFAULT,
-    notShow: [],
+    notShow: settings.notShow,
   };
 
   // get the arguments
@@ -56,8 +58,10 @@ export async function imageInfo(
       if (value.startsWith('"') && value.endsWith('"')) {
         value = value.slice(1, -1);
       }
-      if (key === "show") {
+      if (key === "showDesc") {
         props["showDescription"] = value === "true";
+      } else if (key === "showImage") {
+        props["showImage"] = value === "true";
       } else if (key === "desc") {
         props["description"] = value;
       } else if (key === "name") {
@@ -74,10 +78,9 @@ export async function imageInfo(
           ? (value.toLowerCase() as ImageType)
           : ImageType.DEFAULT;
       } else if (key === "notShow") {
-        props["notShow"] = value.split(",");
+        props["notShow"] = value.replace(" ", "").split(",");
       } else {
-        // props[key] = value;
-        // TODO: should add some setting for date
+        // TODO: should add some setting for other parameters
       }
     }
   });
@@ -110,7 +113,6 @@ export async function imageInfo(
     props.size = imgTFile.stat.size / 1000000;
     props.colorList = colors;
     props.tagList = tags;
-    console.log("images", images);
 
     const uniqueKey = currentImage.link + tags.join("-");
 
