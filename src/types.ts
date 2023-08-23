@@ -44,7 +44,7 @@ export interface IJournalingImage {
   description?: string; // the image description
   showDescription?: boolean; // whether to show the image description
   imageType?: ImageType; // the image type (screenshot, photo, etc.)
-  showList?: string[]; // determines whether to show the labels
+  notShow?: string[]; // determines whether to show the labels
 }
 
 export enum ImageType {

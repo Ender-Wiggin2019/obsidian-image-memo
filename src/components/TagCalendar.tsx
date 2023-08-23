@@ -85,7 +85,7 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
   ];
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <ActivityCalendar
         data={calendarActivities}
         blockSize={settings.blockSize}
@@ -128,7 +128,7 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
 
     // <Calendar
     //   values={values}
@@ -192,7 +192,7 @@ const getCalendarActivitiesByTag = (
     let level: Level = 0;
     const ratio = count / maxCount;
 
-    if (maxCount <= 4) level = (count - 1) as Level;
+    if (maxCount <= 4) level = count as Level;
     else if (ratio > 0 && ratio <= 0.25) level = 1;
     else if (ratio > 0.25 && ratio <= 0.5) level = 2;
     else if (ratio > 0.5 && ratio <= 0.75) level = 3;

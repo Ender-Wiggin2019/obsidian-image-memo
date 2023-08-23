@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { IJournalingImage, ImageType } from "../../types";
+import React from "react";
+import { IJournalingImage } from "../../types";
 import { Separator } from "../../ui/separator";
 import { StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
 
@@ -31,26 +31,26 @@ const ReviewDesc: React.FC<IJournalingImage> = (props) => {
       )}
 
       <Separator className="bg-[color:var(--text-faint)] mb-1" />
-      {!props.showList.includes("path") && (
+      {!props.notShow.includes("path") && props.path.length > 0 && (
         <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Path: </span>
           <span className="">{props.path}</span>
         </div>
       )}
-      {!props.showList.includes("size") && (
+      {!props.notShow.includes("size") && props.size > 0 && (
         <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Size: </span>
           <span className="">{props.size}</span>
         </div>
       )}
-      {!props.showList.includes("date") && (
+      {!props.notShow.includes("date") && props.date.length > 0 && (
         <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Date: </span>
           <span className="">{props.date}</span>
         </div>
       )}
 
-      {!props.showList.includes("palette") && props.colorList && (
+      {!props.notShow.includes("palette") && props.colorList.length > 0 && (
         <div className="text-xs text-[color:var(--text-muted)] text-left">
           {/*<span className="text-bold">Palette: </span>*/}
           <div style={{ width: "max-content" }}>

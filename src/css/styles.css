@@ -83,6 +83,15 @@
 /*	}*/
 /*}*/
 
+.default-container {
+	/*border: 1px solid var(--background-modifier-border);*/
+	font-size: 14px;
+	padding: 6px 14px;
+	/*border-radius: 4px;*/
+	/*background-color: var(--background-secondary-alt);*/
+	position: inherit;
+}
+
 .settings-banner {
 	background-color: var(--background-secondary-alt);
 	border-radius: 4px;
@@ -98,7 +107,6 @@
 .art-picture-frame-container {
 	border: 1px solid var(--background-modifier-border);
 	font-size: 14px;
-	color: var(--text-muted);
 	padding: 6px 14px;
 	border-radius: 4px;
 	background-color: var(--background-secondary-alt);
@@ -166,11 +174,9 @@
 }
 
 .review-picture {
-	/*background-color: #ddc;*/
-	border: solid 1vmin var(--background-modifier-form-field);
-	border-color: #eee;
+	border: solid 1vmin var(--background-primary-alt);
 	border-radius: 1px;
-	box-shadow: 0 0 5px 0 rgba(0, 0, 0, .25) inset, 0 5px 10px 5px rgba(0, 0, 0, .25);
+	box-shadow: 0 0 3px 0 rgba(0, 0, 0, .25) inset, 0 2px 3px 2px rgba(0, 0, 0, .25);
 	box-sizing: border-box;
 	display: inline-block;
 	/*margin: 10vh 10vw;*/
@@ -186,25 +192,36 @@
 	color: var(--text-accent);
 }
 
+.photo-container {
+	display: flex;
+	flex-direction: row;
+	border: 1px solid var(--background-modifier-border);
+	font-size: 14px;
+	color: var(--text-muted);
+	padding: 6px 14px;
+	border-radius: 4px;
+	background-color: var(--background-secondary-alt);
+}
+
 .photo-picture {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	justify-content: center;
-	width:40vh;
-	/*height: 240px;*/
-	padding: var(--space-sm) var(--space-sm) var(--space-xlg);
-	background: white;
-	border-radius: 4px;
-	box-shadow: var(--space-xsm) var(--space-xsm) 15px rgba(0,0,0, .15);
-
-	/* Edit the Translate property below to adjust the position of your picture */
-	transform: rotate(5deg) translate(20px, 45px);
+	align-items: center;
+	border: solid 1vmin var(--background-primary-alt);
+	background-color: var(--background-primary-alt);;
+	border-radius: 1px;
+	box-shadow:0 0 1px 0 rgba(0,0,0,.25) inset, 0 1px 2px 1px rgba(0,0,0,.25);
+	width: 30vh;
+	height: auto;
+	text-align: center;
+	position: relative;
+	flex-shrink: 0; /* 确保图片和标签容器不会缩小 */
 }
 
 .photo-picture img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	width: 30vh;
+	height: auto;
 }
 
 
@@ -238,17 +255,18 @@
 	background-color: #fcfcfa;
 }
 
-.art-picture-frame-container .gallery-info-section {
+.art-picture-frame-section {
 	margin: 6px 0;
 	display: flex;
 }
 
-.gallery-info-section-label {
+.art-picture-frame-section-label {
+	color: var(--text-muted);
 	margin-right: 20px;
 }
 
-.gallery-info-section-value {
-	color: var(--text-a);
+.art-picture-frame-section-value {
+	color: var(--text-muted);
 	overflow-wrap: anywhere;
 }
 
@@ -260,26 +278,10 @@
 	float: left;
 }
 
-.art-picture-frame-container .gallery-info-section-tags {
+.art-picture-frame-container .art-picture-frame-section-tags {
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
-}
-
-.gallery-info-section-tags > .tag {
-	background-color: #333333;
-	border: none;
-	color: black;
-	--text-a: var(--bright-orange);
-	--text-a-hover: var(--bright-blue);
-	font-size: 11px;
-	padding: 1px 8px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	margin: 0px 0px;
-	cursor: pointer;
-	border-radius: 14px;
 }
 
 .img-info-link {

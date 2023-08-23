@@ -47,15 +47,13 @@ export const BasedImage: React.FC<ImageDisplayProps> = ({
         className="review-picture h-auto rounded-md shadow-2xl shadow-lg"
       />
     );
+  } else if (imageType === ImageType.ART) {
+    return (
+      <img ref={imgRef} alt="Displayed Image" className="art-picture-frame" />
+    );
+  } else if (imageType === ImageType.PHOTO) {
+    return <img ref={imgRef} alt="Displayed Image" />;
+  } else {
+    return <img ref={imgRef} alt="Displayed Image" />;
   }
-  return (
-    <img
-      ref={imgRef}
-      alt="Displayed Image"
-      className={cn(
-        { "art-picture-frame": imageType === ImageType.ART },
-        { "photo-picture": imageType === ImageType.PHOTO }
-      )}
-    />
-  );
 };

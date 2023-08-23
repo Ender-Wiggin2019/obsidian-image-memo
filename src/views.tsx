@@ -24,7 +24,7 @@ export default class JournalingView extends ItemView {
   private journalingData: IJournalingData[] = [];
   // private calendar: Calendar;
 
-  constructor(leaf: WorkspaceLeaf, private plugin: JournalingPlugin) {
+  constructor(leaf: WorkspaceLeaf, plugin: JournalingPlugin) {
     super(leaf);
     this.plugin = plugin;
 

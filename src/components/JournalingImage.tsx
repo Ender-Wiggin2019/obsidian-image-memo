@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { IJournalingImage, ImageType } from "../types";
 import { BasedImage } from "./BasedImage";
 import { Badge } from "../ui/badge";
-import BasedDesc from "./BasedDesc";
-import FrameDesc from "./FrameDesc";
+import BasedDesc from "./desc/BasedDesc";
+import FrameDesc from "./desc/FrameDesc";
 import ReviewDesc from "./desc/ReviewDesc";
+import { Separator } from "../ui/separator";
+import PhotoDesc from "./desc/PhotoDesc";
 
 const JournalingImage: React.FC<IJournalingImage> = (props) => {
   const [width, setWidth] = useState<number | null>(null);
@@ -17,7 +19,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
     }
   }, [props.dimensions]);
 
-  // console.log("showList", showList);
+  // console.log("notShow", notShow);
   if (props.imageType === ImageType.REVIEW) {
     return (
       <div className="w-full place-items-center">
@@ -31,84 +33,62 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
         </div>
       </div>
     );
-  }
-  return (
-    <div className="art-picture-frame-container">
-      {/*<div className='art-picture-frame'>*/}
-      <div className="flex flex-col lg:flex-row justify-start gap-4 mx-5">
-        <BasedImage image={props.imageLink} imageType={props.imageType} />
-        {/*<BasedDesc {...props} />*/}
-        <FrameDesc {...props} />
+  } else if (props.imageType === ImageType.ART) {
+    return (
+      <div className="art-picture-frame-container">
+        <div className="flex flex-col lg:flex-row justify-start gap-4 mx-1 my-2">
+          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          {/*<BasedDesc {...props} />*/}
+          <FrameDesc {...props} />
+        </div>
       </div>
-      {/*	???*/}
-      {/*</div>*/}
-      {props.tagList.map((tag, index) => (
-        <Badge key={index} className="bg-zinc-800 text-zinc-50">
-          {tag}
-        </Badge>
-      ))}
-      {!props.showList.includes("name") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label text-red-500">Name</span>
-          <div className="gallery-info-section-value">{props.name}</div>
-        </div>
-      )}
-      {!props.showList.includes("path") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label">Path</span>
-          <div className="gallery-info-section-value">{props.path}</div>
-        </div>
-      )}
-      {!props.showList.includes("size") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label">Size</span>
-          <div className="gallery-info-section-value">{props.size}</div>
-        </div>
-      )}
-      {!props.showList.includes("date") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label">Date</span>
-          <div className="gallery-info-section-value">{props.date}</div>
-        </div>
-      )}
-      {!props.showList.includes("description") && (
-        <div className="gallery-info-section">
-          <span className="gallery-info-section-label">Description</span>
-          <div className="gallery-info-section-value">{props.description}</div>
-        </div>
-      )}
-      {/*...*/}
-      {/*{frontmatter && Object.keys(frontmatter).map(*/}
-      {/*	(yaml) =>*/}
-      {/*		yaml !== "position" &&*/}
-      {/*		!props.showList.includes(yaml) && (*/}
-      {/*			<div className="gallery-info-section">*/}
-      {/*				<span className="gallery-info-section-label">{yaml}</span>*/}
-      {/*				<div className="gallery-info-section-value">*/}
-      {/*					{frontmatter[yaml]}*/}
-      {/*				</div>*/}
-      {/*			</div>*/}
-      {/*		)*/}
-      {/*)}*/}
-      {!props.showList.includes("palette") && props.colorList && (
-        <div className="gallery-info-section mod-tags">
-          <span className="gallery-info-section-label">Palette</span>
-          <div className="gallery-info-section-value">
-            <div style={{ width: "max-content" }}>
-              {props.colorList.map((color) => (
-                <div
-                  key={color.hex}
-                  className="gallery-info-color"
-                  aria-label={color.hex}
-                  style={{ backgroundColor: color.hex }}
-                />
-              ))}
-            </div>
+    );
+  } else if (props.imageType === ImageType.PHOTO) {
+    return (
+      <div className="photo-container justify-between">
+        <div className="photo-picture gap-2">
+          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          <div className="text-[color:var(--text-normal)] border-b pb-1 text-2xl font-semibold">
+            {props.name}
+          </div>
+          <div className="flex flex-row gap-4">
+            {props.tagList.map((tag, index) => (
+              <Badge
+                key={index}
+                className="bg-[color:var(--tag-background)] text-[color:var(--tag-color)] text-md"
+              >
+                #{tag}
+              </Badge>
+            ))}
           </div>
         </div>
-      )}
-    </div>
-  );
+        <div className="space-x-4 text-sm mx-4">
+          <Separator
+            orientation="vertical"
+            className="bg-[color:var(--text-faint)]"
+          />
+        </div>
+        <div className="flex flex-col">
+          <div className="flex flex-row justify-end">
+            <div className="bg-clip-padding w-8 h-16 p-6 bg-[color:var(--tag-background)] border-4 border-[color:var(--tag-background)] border-dashed" />
+          </div>
+          {/*<BasedDesc {...props} />*/}
+          <PhotoDesc {...props} />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="default-container">
+        {/*<div className='art-picture-frame'>*/}
+        <div className="flex flex-col justify-start gap-4">
+          <BasedImage image={props.imageLink} imageType={props.imageType} />
+          {/*<BasedDesc {...props} />*/}
+          <BasedDesc {...props} />
+        </div>
+      </div>
+    );
+  }
 };
 
 export default JournalingImage;

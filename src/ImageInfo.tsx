@@ -44,7 +44,7 @@ export async function imageInfo(
     description: "",
     showDescription: true,
     imageType: ImageType.DEFAULT,
-    showList: [],
+    notShow: [],
   };
 
   // get the arguments
@@ -62,6 +62,8 @@ export async function imageInfo(
         props["description"] = value;
       } else if (key === "name") {
         props["name"] = value;
+      } else if (key === "date") {
+        props["date"] = value;
       } else if (key === "rating") {
         props["rating"] = parseInt(value);
       } else if (key === "type") {
@@ -71,8 +73,8 @@ export async function imageInfo(
         )
           ? (value.toLowerCase() as ImageType)
           : ImageType.DEFAULT;
-      } else if (key === "showList") {
-        props["showList"] = value.split(",");
+      } else if (key === "notShow") {
+        props["notShow"] = value.split(",");
       } else {
         // props[key] = value;
         // TODO: should add some setting for date
@@ -100,7 +102,10 @@ export async function imageInfo(
     props.imageLink = currentImage;
     props.path = imgTFile.path;
     props.extension = imgTFile.extension;
-    props.date = new Date(imgTFile.stat.ctime).toString();
+    props.date =
+      props.date.length > 0
+        ? props.date
+        : new Date(imgTFile.stat.ctime).toString();
     props.dimensions = measureEl;
     props.size = imgTFile.stat.size / 1000000;
     props.colorList = colors;

@@ -1,9 +1,4 @@
 import { App, ItemView, Plugin, WorkspaceLeaf } from "obsidian";
-import React from "react";
-import ReactDOM from "react-dom";
-
-import DiceRoller from "./components/DicerRoller";
-import { JournalingSettings } from "./types";
 import { imageInfo } from "./ImageInfo";
 import JournalingView from "./views";
 import { defaultSettings, ISettings, JournalingSettingsTab } from "./settings";
