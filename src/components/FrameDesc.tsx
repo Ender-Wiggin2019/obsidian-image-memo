@@ -27,8 +27,11 @@ const FrameDesc: React.FC<IJournalingImage> = (props) => {
       )}
       <div className="flex flex-row gap-2">
         {props.tagList.map((tag, index) => (
-          <Badge key={index} className="bg-zinc-800 text-zinc-50">
-            {tag}
+          <Badge
+            key={index}
+            className="bg-[color:var(--tag-background)] text-[color:var(--tag-color)] text-[length:var(--tag-size)]"
+          >
+            #{tag}
           </Badge>
         ))}
       </div>

@@ -20,8 +20,8 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
   // console.log("showList", showList);
   if (props.imageType === ImageType.REVIEW) {
     return (
-      <div className="w-full place-items-center font-mono">
-        <div className="bg-zinc-800 rounded-md shadow-lg">
+      <div className="w-full place-items-center">
+        <div className="review-container">
           <div className="md:flex px-4 py-4 gap-4 leading-none max-w-4xl">
             <div className="flex-none">
               <BasedImage image={props.imageLink} imageType={props.imageType} />
@@ -33,7 +33,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
     );
   }
   return (
-    <div className="gallery-info-container">
+    <div className="art-picture-frame-container">
       {/*<div className='art-picture-frame'>*/}
       <div className="flex flex-col lg:flex-row justify-start gap-4 mx-5">
         <BasedImage image={props.imageLink} imageType={props.imageType} />

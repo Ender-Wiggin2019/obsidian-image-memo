@@ -83,26 +83,37 @@
 /*	}*/
 /*}*/
 
-.gallery-info-container {
+.settings-banner {
+	background-color: var(--background-secondary-alt);
+	border-radius: 4px;
+	margin-bottom: 2em;
+	padding: 1.5em;
+	text-align: left;
+}
+
+.settings-banner h4 {
+	margin: 0;
+}
+
+.art-picture-frame-container {
 	border: 1px solid var(--background-modifier-border);
 	font-size: 14px;
 	color: var(--text-muted);
 	padding: 6px 14px;
 	border-radius: 4px;
-	background-color: var(--background-primary-alt);
+	background-color: var(--background-secondary-alt);
 	position: inherit;
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 }
 
-
 .art-picture-frame {
-	background-color: #ddc;
-	border: solid 2vmin #eee;
-	border-bottom-color: #fff;
-	border-left-color: #eee;
+	background-color: var(--background-modifier-border);
+	border: solid 2vmin var(--background-primary-alt);
+	border-bottom-color: var(--background-secondary-alt);
+	border-left-color: var(--background-primary-alt);
 	border-radius: 2px;
-	border-right-color: #eee;
-	border-top-color: #ddd;
+	border-right-color: var(--background-primary-alt);
+	border-top-color: var(--background-primary);
 	box-shadow: 0 0 5px 0 rgba(0, 0, 0, .25) inset, 0 5px 10px 5px rgba(0, 0, 0, .25);
 	box-sizing: border-box;
 	display: inline-block;
@@ -138,14 +149,25 @@
 
 
 .art-picture-frame-desc {
-	background-color: #ffffff;
+	background-color: var(--background-primary-alt);
 	text-align:start;
 	box-shadow:0 0 1px 0 rgba(0,0,0,.25) inset, 0 1px 2px 1px rgba(0,0,0,.25);
 }
 
+.review-container {
+	border: 1px solid var(--background-modifier-border);
+	font-size: 14px;
+	color: var(--text-muted);
+	padding: 6px 14px;
+	border-radius: 4px;
+	background-color: var(--background-secondary-alt);
+	position: inherit;
+	/*margin-bottom: 30px;*/
+}
+
 .review-picture {
 	/*background-color: #ddc;*/
-	border: solid 2vmin #eee;
+	border: solid 1vmin var(--background-modifier-form-field);
 	border-color: #eee;
 	border-radius: 1px;
 	box-shadow: 0 0 5px 0 rgba(0, 0, 0, .25) inset, 0 5px 10px 5px rgba(0, 0, 0, .25);
@@ -157,6 +179,11 @@
 	/*margin-top: -1vh;*/
 	position: relative;
 	text-align: center;
+}
+
+.review-star {
+	display: flex;
+	color: var(--text-accent);
 }
 
 .photo-picture {
@@ -211,7 +238,7 @@
 	background-color: #fcfcfa;
 }
 
-.gallery-info-container .gallery-info-section {
+.art-picture-frame-container .gallery-info-section {
 	margin: 6px 0;
 	display: flex;
 }
@@ -233,7 +260,7 @@
 	float: left;
 }
 
-.gallery-info-container .gallery-info-section-tags {
+.art-picture-frame-container .gallery-info-section-tags {
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;

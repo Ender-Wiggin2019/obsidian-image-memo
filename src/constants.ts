@@ -1,6 +1,8 @@
 import { JournalingSettings } from "./types";
 
-export const VIEW_TYPE_CALENDAR = "calendar";
+export const DEFAULT_RANGE = 90;
+
+export const VIEW_TYPE_JOURNALING = "journaling";
 export const VIEW_DISPLAY_TEXT = "Journaling Calendar";
 export const TRIGGER_ON_OPEN = "calendar:open";
 export const SETTINGS: JournalingSettings = {

@@ -1,6 +1,6 @@
 import { App, ItemView, TFile, WorkspaceLeaf } from "obsidian";
 // import Calendar from "react-github-contribution-calendar";
-import { VIEW_DISPLAY_TEXT, VIEW_TYPE_CALENDAR } from "./constants";
+import { VIEW_DISPLAY_TEXT, VIEW_TYPE_JOURNALING } from "./constants";
 import { createRoot } from "react-dom/client";
 import React from "react";
 import TagCalendar from "./components/TagCalendar";
@@ -11,24 +11,23 @@ import {
   getDateFromFile,
 } from "obsidian-daily-notes-interface";
 import { getJournalingData } from "./data/journalingData";
-import JournalingPlugin from "./main";
 import { generateDateRange } from "./lib/utils";
 import { JournalingDataProvider } from "./utils/JournalingContext";
 import { IJournalingData } from "./types";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
+import JournalingPlugin from "./main";
 
 export default class JournalingView extends ItemView {
-  plugin: JournalingPlugin;
   // app: App;
+  private plugin: JournalingPlugin;
   private root: any;
   private journalingData: IJournalingData[] = [];
   // private calendar: Calendar;
 
-  constructor(leaf: WorkspaceLeaf, plugin: JournalingPlugin) {
+  constructor(leaf: WorkspaceLeaf, private plugin: JournalingPlugin) {
     super(leaf);
-    // this.app = app;
     this.plugin = plugin;
-    // this.onNoteSettingsUpdate = this.onNoteSettingsUpdate.bind(this);
+
     this.onFileCreated = this.onFileCreated.bind(this);
     this.onFileDeleted = this.onFileDeleted.bind(this);
     this.onFileModified = this.onFileModified.bind(this);
@@ -50,7 +49,7 @@ export default class JournalingView extends ItemView {
   }
 
   getViewType(): string {
-    return VIEW_TYPE_CALENDAR;
+    return VIEW_TYPE_JOURNALING;
   }
 
   getDisplayText(): string {
@@ -91,7 +90,12 @@ export default class JournalingView extends ItemView {
     this.journalingData =
       (await getJournalingData(
         this.app,
-        generateDateRange("2023-08-15", "2023-08-31")
+        generateDateRange(
+          moment()
+            .subtract(this.plugin.settings.dateRange, "days")
+            .format("YYYY-MM-DD"),
+          moment().format("YYYY-MM-DD")
+        )
       )) || [];
 
     // console.log('journalingData', this.journalingData);
@@ -103,29 +107,22 @@ export default class JournalingView extends ItemView {
   private async onFileCreated(file: TFile): Promise<void> {
     if (this.app.workspace.layoutReady) {
       if (getDateFromFile(file, "day")) {
-        // 如果是日记文件，则更新数据并重新渲染
         await this.updateJournalingData();
       }
-      // 如果你还想对其他文件类型做特定操作，可以在此处添加其他条件语句
     }
   }
   private async onFileDeleted(file: TFile): Promise<void> {
     if (getDateFromFile(file, "day")) {
-      // 如果是日记文件，则更新数据并重新渲染
       await this.updateJournalingData();
     }
-    // 如果你还想对其他文件类型做特定操作，可以在此处添加其他条件语句
   }
   private async onFileModified(file: TFile): Promise<void> {
     if (getDateFromFile(file, "day")) {
-      // 如果是日记文件，则更新数据并重新渲染
       await this.updateJournalingData();
     }
-    // 如果你还想对其他文件类型做特定操作，可以在此处添加其他条件语句
   }
   private async onFileOpen(file: TFile): Promise<void> {
     if (getDateFromFile(file, "day")) {
-      // 如果是日记文件，则更新数据并重新渲染
       await this.updateJournalingData();
     }
   }
@@ -147,6 +144,8 @@ export default class JournalingView extends ItemView {
     const leaf = inNewSplit
       ? workspace.splitActiveLeaf()
       : workspace.getUnpinnedLeaf();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     await leaf.openFile(existingFile, { active: true, mode });
 
     // FIXME: I haven't set activeFile yet
@@ -154,12 +153,13 @@ export default class JournalingView extends ItemView {
   }
 
   renderReactComponent() {
+    console.log("settings2", this.plugin.settings);
     this.root.render(
       <React.StrictMode>
         <JournalingDataProvider>
           <TagCalendar
             data={this.journalingData}
-            until={"2023-08-31"}
+            settings={this.plugin.settings}
             onClickDay={this.openOrCreateDailyNote}
           />
         </JournalingDataProvider>

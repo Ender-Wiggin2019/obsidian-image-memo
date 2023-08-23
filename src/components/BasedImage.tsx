@@ -17,7 +17,6 @@ export const BasedImage: React.FC<ImageDisplayProps> = ({
   const plugin = usePlugin();
   const imgRef = useRef<HTMLImageElement>(null);
 
-  console.log("link2", image.link);
   useEffect(() => {
     if (image.type === "local" && plugin) {
       const destFile = app.metadataCache.getFirstLinkpathDest(

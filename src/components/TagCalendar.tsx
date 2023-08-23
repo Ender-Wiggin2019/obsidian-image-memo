@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import Calendar from "react-github-contribution-calendar";
 import Calendar from "./Calendar";
 import { getJournalingData } from "../data/journalingData";
@@ -13,23 +13,36 @@ import {
 
 import { Tooltip as MuiTooltip } from "@mui/material";
 import { dateIndexToTagIndex } from "../utils/dateIndexToTagIndex";
-import ActivityCalendar, { Activity, Level } from "react-activity-calendar";
+import ActivityCalendar, {
+  Activity,
+  Color,
+  ColorScale,
+  Level,
+  ThemeInput,
+} from "react-activity-calendar";
 import { moment } from "obsidian";
 import { Moment } from "moment";
+import { ISettings } from "../settings";
+import { ILocaleOverride, IWeekStartOption } from "obsidian-calendar-ui";
+import { usePlugin } from "../utils/pluginContext";
 
 interface TagCalendarProps {
   data: IJournalingData[];
-  until: string;
+  settings: ISettings;
   onClickDay: (date: Moment, inNewSplit: boolean) => Promise<void>;
 }
 
 const TagCalendar: React.FC<TagCalendarProps> = ({
   data,
-  until,
+  settings,
   onClickDay,
 }) => {
   // 处理data, 获取每天日记中的图片+标签数量
+  // FIXME: plugin 实时更新
+  // const plugin = usePlugin();
+  // console.log('setting3', plugin.settings);
   const [selectedTag, setSelectedTag] = React.useState("");
+
   if (data === undefined) {
     return null;
   }
@@ -49,18 +62,41 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
   ); // TODO: range should be in setting
 
   // test
-  until = "2023-08-24";
   console.log("calendarActivities in TagCalendar", calendarActivities);
   // const {app} = useApp();
   // const data = getJournalingData();
-  const panelColors = ["#EEEEEE", "#D6E685", "#8CC665", "#44A340", "#1E6823"];
+  const colors: [from: Color, to: Color] = [
+    settings.fromColor,
+    settings.toColor,
+  ];
+
+  const theme: ThemeInput = {
+    light: colors,
+    dark: colors,
+  };
+  const weekdays = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+
   return (
     <>
       <ActivityCalendar
         data={calendarActivities}
-        blockSize={18}
+        blockSize={settings.blockSize}
+        blockRadius={settings.blockRadius}
+        fontSize={settings.fontSize}
+        theme={theme}
         hideColorLegend={true}
         hideTotalCount={true}
+        hideMonthLabels={settings.hideMonthLabels}
+        showWeekdayLabels={settings.showWeekdayLabels}
+        weekStart={weekdays.indexOf(settings.weekStart) as Day}
         renderBlock={(block, activity) => {
           if (activity.count === 0) return block;
           else
