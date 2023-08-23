@@ -6,11 +6,12 @@ import { StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
 const ReviewDesc: React.FC<IJournalingImage> = (props) => {
   console.log("props", props);
   return (
-    <div className="flex-col text-zinc-300">
-      {props.name && <p className="pt-4 text-2xl font-bold">{props.name}</p>}
+    // TODO: use text-[length:var(--font-small)] for text
+    <div className="flex-col text-[color:var(--text-normal)]">
+      {props.name && <p className="-mt-1 text-2xl font-bold">{props.name}</p>}
       {/*<hr className="hr-text" data-content="" />*/}
-      <Separator className="bg-zinc-600" />
-      <div className="text-md flex justify-start my-2 gap-2">
+      <Separator className="bg-[color:var(--text-faint)] mb-1" />
+      <div className="text-lg flex justify-start my-2 gap-2">
         <span className="">
           {props.tagList.map((tag) => (
             <span key={tag}>{tag.toString()} | </span>
@@ -18,41 +19,40 @@ const ReviewDesc: React.FC<IJournalingImage> = (props) => {
         </span>
         {"   "}
         {props.rating && props.rating > 0 && (
-          <span className="flex text-yellow-500">
+          <span className="review-star text-lg">
             <StarRating rating={props.rating} />
           </span>
         )}
-        <span className="font-bold"></span>
       </div>
       {props.description && props.description.length > 0 && (
-        <p className="hidden md:block my-4 text-sm text-left">
+        <p className="hidden md:block my-4 text-lg text-left">
           {props.description}
         </p>
       )}
 
-      <Separator className="bg-zinc-600" />
+      <Separator className="bg-[color:var(--text-faint)] mb-1" />
       {!props.showList.includes("path") && (
-        <div className="text-sm text-left">
+        <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Path: </span>
           <span className="">{props.path}</span>
         </div>
       )}
       {!props.showList.includes("size") && (
-        <div className="text-sm text-left">
+        <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Size: </span>
           <span className="">{props.size}</span>
         </div>
       )}
       {!props.showList.includes("date") && (
-        <div className="text-sm text-left">
+        <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Date: </span>
           <span className="">{props.date}</span>
         </div>
       )}
 
       {!props.showList.includes("palette") && props.colorList && (
-        <div className="text-sm text-left">
-          <span className="text-bold">Palette: </span>
+        <div className="text-xs text-[color:var(--text-muted)] text-left">
+          {/*<span className="text-bold">Palette: </span>*/}
           <div style={{ width: "max-content" }}>
             {props.colorList.map((color) => (
               <div

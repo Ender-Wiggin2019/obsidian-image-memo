@@ -14,7 +14,7 @@ import { getJournalingData } from "./data/journalingData";
 import { generateDateRange } from "./lib/utils";
 import { JournalingDataProvider } from "./utils/JournalingContext";
 import { IJournalingData } from "./types";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import JournalingPlugin from "./main";
 
 export default class JournalingView extends ItemView {
@@ -90,7 +90,12 @@ export default class JournalingView extends ItemView {
     this.journalingData =
       (await getJournalingData(
         this.app,
-        generateDateRange("2023-08-15", "2023-08-31")
+        generateDateRange(
+          moment()
+            .subtract(this.plugin.settings.dateRange, "days")
+            .format("YYYY-MM-DD"),
+          moment().format("YYYY-MM-DD")
+        )
       )) || [];
 
     // console.log('journalingData', this.journalingData);
