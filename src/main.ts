@@ -5,14 +5,6 @@ import { defaultSettings, ISettings, JournalingSettingsTab } from "./settings";
 import { Moment, WeekSpec } from "moment";
 import { VIEW_TYPE_JOURNALING } from "./constants";
 
-declare global {
-  interface Window {
-    app: App;
-    moment: () => Moment;
-    _bundledLocaleWeekSpec: WeekSpec;
-  }
-}
-
 export default class JournalingPlugin extends Plugin {
   private view: JournalingView; // the view to display tag calendar
   public settings: ISettings; // settings for the plugin
@@ -33,7 +25,7 @@ export default class JournalingPlugin extends Plugin {
 
     // Register image info block
     this.registerMarkdownCodeBlockProcessor(
-      "journaling",
+      "imemo",
       async (source, el, _ctx) => {
         imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
       }

@@ -26,16 +26,6 @@ export interface ISettings {
   notShow: string[];
 }
 
-const weekdays = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-
 export const defaultSettings = Object.freeze({
   dateRange: DEFAULT_RANGE,
   fromColor: "#EEEEEE",
@@ -92,7 +82,6 @@ export class JournalingSettingsTab extends PluginSettingTab {
     this.addFontSizeSetting();
     this.addHideMonthLabelsSetting();
     this.addShowWeekdayLabelsSetting();
-    this.addWeekStartSetting();
 
     this.containerEl.createEl("h3", {
       text: "Note Settings",
@@ -102,27 +91,10 @@ export class JournalingSettingsTab extends PluginSettingTab {
     this.addShowDescriptionSetting();
     this.addNotShowSetting();
 
-    // if (
-    // 	this.plugin.settings.showWeeklyNote &&
-    // 	!appHasPeriodicNotesPluginLoaded()
-    // ) {
-    // 	this.containerEl.createEl("h3", {
-    // 		text: "Weekly Note Settings",
-    // 	});
-    // 	this.containerEl.createEl("p", {
-    // 		cls: "setting-item-description",
-    // 		text:
-    // 			"Note: Weekly Note settings are moving. You are encouraged to install the 'Periodic Notes' plugin to keep the functionality in the future.",
-    // 	});
-    // 	this.addWeeklyNoteFormatSetting();
-    // 	this.addWeeklyNoteTemplateSetting();
-    // 	this.addWeeklyNoteFolderSetting();
-    // }
-
-    this.containerEl.createEl("h3", {
-      text: "Advanced Settings",
-    });
-    this.addLocaleOverrideSetting();
+    // this.containerEl.createEl("h3", {
+    //   text: "Advanced Settings",
+    // });
+    // this.addLocaleOverrideSetting();
   }
 
   addDateRangeSetting(): void {
@@ -240,31 +212,6 @@ export class JournalingSettingsTab extends PluginSettingTab {
       });
   }
 
-  addWeekStartSetting(): void {
-    const { moment } = window;
-
-    const localizedWeekdays = moment.weekdays();
-    const localeWeekStartNum = window._bundledLocaleWeekSpec.dow;
-    const localeWeekStart = moment.weekdays()[localeWeekStartNum];
-
-    new Setting(this.containerEl)
-      .setName("Start week on:")
-      .setDesc(
-        "Choose what day of the week to start. Select 'Locale default' to use the default specified by moment.js"
-      )
-      .addDropdown((dropdown) => {
-        dropdown.addOption("locale", `Locale default (${localeWeekStart})`);
-        localizedWeekdays.forEach((day, i) => {
-          dropdown.addOption(weekdays[i], day);
-        });
-        dropdown.setValue(this.plugin.settings.weekStart);
-        dropdown.onChange(async (value) => {
-          this.plugin.settings.weekStart = value as IWeekStartOption;
-          await this.plugin.saveSettings();
-        });
-      });
-  }
-
   addShowImageSetting(): void {
     new Setting(this.containerEl)
       .setName("Show image")
@@ -309,26 +256,26 @@ export class JournalingSettingsTab extends PluginSettingTab {
       });
   }
 
-  addLocaleOverrideSetting(): void {
-    const { moment } = window;
-
-    const sysLocale = navigator.language?.toLowerCase();
-
-    new Setting(this.containerEl)
-      .setName("Override locale:")
-      .setDesc(
-        "Set this if you want to use a locale different from the default"
-      )
-      .addDropdown((dropdown) => {
-        dropdown.addOption("system-default", `Same as system (${sysLocale})`);
-        moment.locales().forEach((locale) => {
-          dropdown.addOption(locale, locale);
-        });
-        dropdown.setValue(this.plugin.settings.localeOverride);
-        dropdown.onChange(async (value) => {
-          this.plugin.settings.localeOverride = value as string;
-          await this.plugin.saveSettings();
-        });
-      });
-  }
+  // addLocaleOverrideSetting(): void {
+  //   const { moment } = window;
+  //
+  //   const sysLocale = navigator.language?.toLowerCase();
+  //
+  //   new Setting(this.containerEl)
+  //     .setName("Override locale:")
+  //     .setDesc(
+  //       "Set this if you want to use a locale different from the default"
+  //     )
+  //     .addDropdown((dropdown) => {
+  //       dropdown.addOption("system-default", `Same as system (${sysLocale})`);
+  //       moment.locales().forEach((locale) => {
+  //         dropdown.addOption(locale, locale);
+  //       });
+  //       dropdown.setValue(this.plugin.settings.localeOverride);
+  //       dropdown.onChange(async (value) => {
+  //         this.plugin.settings.localeOverride = value as string;
+  //         await this.plugin.saveSettings();
+  //       });
+  //     });
+  // }
 }

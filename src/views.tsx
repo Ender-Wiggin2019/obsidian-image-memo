@@ -4,7 +4,6 @@ import { VIEW_DISPLAY_TEXT, VIEW_TYPE_JOURNALING } from "./constants";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import TagCalendar from "./components/TagCalendar";
-import ReactDOM from "react-dom";
 import {
   getAllDailyNotes,
   getDailyNote,

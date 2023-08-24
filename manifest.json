@@ -1,10 +1,10 @@
 {
-  "id": "obsidian-journaling",
-  "name": "Obsidian Journaling",
+  "id": "obsidian-image-memo",
+  "name": "Obsidian Image Memo",
   "version": "0.0.1",
   "minAppVersion": "0.12.0",
-  "description": "Image journaling plugin for Obsidian",
+  "description": "Label and beautify your images in different modes, and display tags in calendar.",
   "author": "Oushuo Huang",
-  "authorUrl": "https://obsidian.md",
+  "authorUrl": "https://github.com/Ender-Wiggin2019",
   "isDesktopOnly": false
 }
