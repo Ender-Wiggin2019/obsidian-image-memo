@@ -4,7 +4,8 @@ export function getTags(source: string) {
   const result = [];
 
   while ((match = regex.exec(source)) !== null) {
-    result.push(match[1]);
+    const tag = match[1];
+    result.push(tag.replace(tag[0], tag[0].toUpperCase())); // capitalize the first letter
   }
 
   return result;

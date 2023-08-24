@@ -39,7 +39,7 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
 
   const tagData = dateIndexToTagIndex(data);
   const tags = Object.values(tagData).map((tagEntry) => tagEntry.tag);
-  tags.unshift("all");
+  tags.unshift("All");
 
   const calendarActivities = getCalendarActivitiesByTag(
     tagData,
@@ -134,7 +134,7 @@ const getCalendarActivitiesByTag = (
   let startFlag = 0,
     endFlag = 0;
   // Populate the result dictionary as before
-  if (tag === "" || tag === "all") {
+  if (tag === "" || tag === "All") {
     data.forEach((tagEntry) => {
       tagEntry.dates.forEach((dateEntry) => {
         if (dateEntry.date < startDate || dateEntry.date > endDate) return;
