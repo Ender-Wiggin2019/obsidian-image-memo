@@ -6,9 +6,9 @@ import { IJournalingImage, ImageType } from "./types";
 import JournalingImage from "./components/JournalingImage";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { getImages } from "./source_process/GetImages";
+import { getImages } from "./source_process/getImages";
 import { AppContext } from "./utils/AppContext";
-import { getTags } from "./source_process/GetTags";
+import { getTags } from "./source_process/getTags";
 import {
   EXTENSIONS,
   EXTRACT_COLORS_OPTIONS,
