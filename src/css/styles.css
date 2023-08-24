@@ -10,7 +10,8 @@
 
 .default-picture {
 	align-self: flex-start;
-	height: 40vh;
+	height: auto;
+	max-height: 40vh;
 }
 
 .settings-banner {
@@ -50,6 +51,7 @@
 	/*margin: 10vh 10vw;*/
 	/*height: 45vh;*/
 	width: 35vh;
+	max-width: 40vh;
 	height: auto;
 	padding: 2vmin;
 	position: relative;
@@ -136,16 +138,18 @@
 	background-color: var(--background-primary-alt);;
 	border-radius: 1px;
 	box-shadow:0 0 1px 0 rgba(0,0,0,.25) inset, 0 1px 2px 1px rgba(0,0,0,.25);
-	width: 32vh;
-	height: auto;
+	/*width: 30vh;*/
+	/*height: auto;*/
 	text-align: center;
 	position: relative;
 	flex-shrink: 0; /* 确保图片和标签容器不会缩小 */
 }
 
 .photo-picture img {
-	width: 30vh;
-	height: auto;
+	width: 100%;
+	height: auto%;
+	/*width: 30vh;*/
+	/*height: auto;*/
 }
 
 

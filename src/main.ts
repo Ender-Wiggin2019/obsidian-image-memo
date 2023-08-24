@@ -26,7 +26,8 @@ export default class JournalingPlugin extends Plugin {
     this.registerMarkdownCodeBlockProcessor(
       "imemo",
       async (source, el, _ctx) => {
-        imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
+        // imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
+        imageInfo(source, el, this.app.vault, this);
       }
     );
 
@@ -69,6 +70,6 @@ export default class JournalingPlugin extends Plugin {
   async saveSettings() {
     await this.saveData(this.settings);
     // update calendar
-    await this.view.renderReactComponent();
+    if (this.view) await this.view.renderReactComponent();
   }
 }

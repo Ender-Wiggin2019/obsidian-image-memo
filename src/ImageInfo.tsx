@@ -12,7 +12,6 @@ import { getTags } from "./source_process/getTags";
 import {
   EXTENSIONS,
   EXTRACT_COLORS_OPTIONS,
-  OB_GALLERY_INFO,
   PLUGIN_MARKDOWN_USAGE,
 } from "./constants";
 import { PluginContext } from "./utils/pluginContext";
@@ -21,7 +20,7 @@ export async function imageInfo(
   source: string,
   el: HTMLElement,
   vault: Vault,
-  metadata: MetadataCache,
+  // metadata: MetadataCache,
   plugin: JournalingPlugin
 ) {
   // Get all images
@@ -78,7 +77,9 @@ export async function imageInfo(
           ? (value.toLowerCase() as ImageType)
           : ImageType.DEFAULT;
       } else if (key === "notShow") {
-        props["notShow"] = value.replace(" ", "").split(",");
+        // union of the default setting and input
+        const input = value.replace(" ", "").split(",");
+        props["notShow"] = [...new Set([...props["notShow"], ...input])];
       } else {
         // TODO: should add some setting for other parameters
       }

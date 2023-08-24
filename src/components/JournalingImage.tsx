@@ -42,7 +42,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
   } else if (props.imageType === ImageType.PHOTO) {
     return (
       <div className="photo-container justify-between">
-        <div className="photo-picture gap-2">
+        <div className="photo-picture w-1/2 gap-2">
           {props.showImage && (
             <BasedImage image={props.imageLink} imageType={props.imageType} />
           )}
@@ -69,7 +69,7 @@ const JournalingImage: React.FC<IJournalingImage> = (props) => {
           </div>
         )}
         {props.showDescription && (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-1/2">
             <div className="flex flex-row justify-end">
               <div className="bg-clip-padding w-8 h-16 p-6 bg-[color:var(--tag-background)] border-4 border-[color:var(--tag-background)] border-dashed" />
             </div>

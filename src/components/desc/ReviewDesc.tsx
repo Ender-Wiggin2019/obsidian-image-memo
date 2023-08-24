@@ -39,7 +39,7 @@ const ReviewDesc: React.FC<IJournalingImage> = (props) => {
       {!props.notShow.includes("size") && props.size > 0 && (
         <div className="text-xs text-[color:var(--text-muted)] text-left">
           <span className="text-bold">Size: </span>
-          <span className="">{props.size}</span>
+          <span className="">{props.size.toFixed(2)}</span> MB
         </div>
       )}
       {!props.notShow.includes("date") && props.date.length > 0 && (
