@@ -16,16 +16,17 @@ export const getImages = (source: string): ImageLink[] => {
 };
 
 export const getImageFromLine = (line: string): ImageLink | null => {
-	if (line.match(regexMdGlobal)) {
-		const link = line.match(regexMdExternalImage)?.[1];
-		if (link) {
-			return { type: "external", link };
-		}
-		const link2 = line.match(regexMdLocalImage)?.[1];
-		if (link2) {
-			return { type: "local", link: link2 };
-		}
-	} else if (line.match(regexWikiGlobal)) { // match wiki must be local file
+  if (line.match(regexMdGlobal)) {
+    const link = line.match(regexMdExternalImage)?.[1];
+    if (link) {
+      return { type: "external", link };
+    }
+    const link2 = line.match(regexMdLocalImage)?.[1];
+    if (link2) {
+      return { type: "local", link: link2 };
+    }
+  } else if (line.match(regexWikiGlobal)) {
+    // match wiki must be local file
     const link = line.match(regexWiki)?.[1];
     if (link) {
       return {
