@@ -490,6 +490,7 @@
 	position: inherit;
 }
 .default-picture {
+	align-self: flex-start;
 	height: 40vh;
 }
 .settings-banner {
@@ -512,6 +513,7 @@
 	/*margin-bottom: 30px;*/
 }
 .art-picture-frame {
+	align-self: flex-start;
 	background-color: var(--background-modifier-border);
 	border: solid 2vmin var(--background-primary-alt);
 	border-bottom-color: var(--background-secondary-alt);
@@ -524,7 +526,8 @@
 	display: inline-block;
 	/*margin: 10vh 10vw;*/
 	/*height: 45vh;*/
-	width: 40vh;
+	width: 35vh;
+	height: auto;
 	padding: 2vmin;
 	position: relative;
 	text-align: center;

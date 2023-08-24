@@ -29,7 +29,7 @@ export interface ISettings {
 export const defaultSettings = Object.freeze({
   dateRange: DEFAULT_RANGE,
   fromColor: "#EEEEEE",
-  toColor: "#1E6823",
+  toColor: "#8B6CEF",
   blockSize: 16,
   blockRadius: 2,
   fontSize: 14,
