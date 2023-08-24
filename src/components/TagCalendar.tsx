@@ -83,7 +83,11 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
           if (activity.count === 0) return block;
           else
             return (
-              <MuiTooltip title={`${activity.count} tags on ${activity.date}`}>
+              <MuiTooltip
+                title={`${activity.count} tags on ${activity.date}`}
+                disableHoverListener={true}
+                disableFocusListener={true}
+              >
                 {block}
               </MuiTooltip>
             );
