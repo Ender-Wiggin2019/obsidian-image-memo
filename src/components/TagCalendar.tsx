@@ -111,15 +111,6 @@ const TagCalendar: React.FC<TagCalendarProps> = ({
         </SelectContent>
       </Select>
     </div>
-
-    // <Calendar
-    //   values={values}
-    //   until={until}
-    //   monthLabelAttributes={""}
-    //   panelColors={panelColors}
-    //   weekLabelAttributes={""}
-    //   panelAttributes={""}
-    // />
   );
 };
 const getCalendarActivitiesByTag = (

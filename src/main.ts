@@ -1,8 +1,7 @@
-import { App, Plugin, WorkspaceLeaf } from "obsidian";
+import { Plugin, WorkspaceLeaf } from "obsidian";
 import { imageInfo } from "./ImageInfo";
 import JournalingView from "./views";
 import { defaultSettings, ISettings, JournalingSettingsTab } from "./settings";
-import { Moment, WeekSpec } from "moment";
 import { VIEW_TYPE_JOURNALING } from "./constants";
 
 export default class JournalingPlugin extends Plugin {
@@ -69,5 +68,7 @@ export default class JournalingPlugin extends Plugin {
 
   async saveSettings() {
     await this.saveData(this.settings);
+    // update calendar
+    await this.view.renderReactComponent();
   }
 }
