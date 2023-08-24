@@ -20,7 +20,9 @@ export function extractJournalingTags(input: string): IJournalingDailyTag[] {
     // Extract tags
     let tagMatch;
     while ((tagMatch = tagRegex.exec(blockContent)) !== null) {
-      const tag = tagMatch[1];
+      let tag = tagMatch[1];
+      // to upper case
+      tag = tag.replace(tag[0], tag[0].toUpperCase());
       if (!tagMap[tag]) {
         tagMap[tag] = {
           count: 0,
