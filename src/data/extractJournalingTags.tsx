@@ -7,7 +7,7 @@
 import { IJournalingDailyTag } from "../types";
 
 export function extractJournalingTags(input: string): IJournalingDailyTag[] {
-  const journalingRegex = /```journaling\s*([\s\S]*?)```/g;
+  const journalingRegex = /```imemo\s*([\s\S]*?)```/g;
   const tagRegex = /#(\w+)/g;
   const imageRegex = /!\[\[([^\]]+)\]\]/g;
 

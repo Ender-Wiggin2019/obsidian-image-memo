@@ -1,9 +1,13 @@
 import { ImageLink } from "src/types";
 
+// match the style like ![[xxx.png]]
 const regexWiki = /\[\[([^\]]+)\]\]/;
-const regexMdImage = /!\[.*?\]\((.*?)\)/;
 const regexWikiGlobal = /\[\[([^\]]*)\]\]/g;
-const regexMdGlobal = /\[([^\]]*)\]\(([^\(]*)\)/g;
+
+// match the style like ![](xxx.png)
+const regexMdLocalImage = /!\[.*?\]\(([^http].*?)\)/;
+const regexMdExternalImage = /\((http[^)]+)\)/;
+const regexMdGlobal = /!\[([^\]]*)\]\(([^(]*)\)/g;
 
 export const getImages = (source: string): ImageLink[] => {
   const lines = source.split("\n").filter((row) => row.startsWith("!"));
@@ -12,12 +16,16 @@ export const getImages = (source: string): ImageLink[] => {
 };
 
 export const getImageFromLine = (line: string): ImageLink | null => {
-  if (line.match(regexMdGlobal)) {
-    const link = line.match(regexMdImage)?.[1];
-    if (link) {
-      return { type: "external", link };
-    }
-  } else if (line.match(regexWikiGlobal)) {
+	if (line.match(regexMdGlobal)) {
+		const link = line.match(regexMdExternalImage)?.[1];
+		if (link) {
+			return { type: "external", link };
+		}
+		const link2 = line.match(regexMdLocalImage)?.[1];
+		if (link2) {
+			return { type: "local", link: link2 };
+		}
+	} else if (line.match(regexWikiGlobal)) { // match wiki must be local file
     const link = line.match(regexWiki)?.[1];
     if (link) {
       return {
