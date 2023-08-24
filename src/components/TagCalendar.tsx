@@ -155,6 +155,15 @@ const getCalendarActivitiesByTag = (
     const tagEntry = data.find((t) => t.tag === tag);
     if (tagEntry) {
       tagEntry.dates.forEach((dateEntry) => {
+        if (dateEntry.date < startDate || dateEntry.date > endDate) return;
+        else if (
+          dateEntry.date.format("YYYY-MM-DD") === startDate.format("YYYY-MM-DD")
+        )
+          startFlag = 1;
+        else if (
+          dateEntry.date.format("YYYY-MM-DD") === endDate.format("YYYY-MM-DD")
+        )
+          endFlag = 1;
         const dateString = dateEntry.date.format("YYYY-MM-DD");
         result[dateString] = dateEntry.count;
       });
@@ -177,6 +186,7 @@ const getCalendarActivitiesByTag = (
 
     return { date, count, level };
   });
+  activities.sort((a, b) => moment(a.date).diff(moment(b.date)));
   if (!startFlag) {
     activities.unshift({
       date: startDate.format("YYYY-MM-DD"),
