@@ -5,8 +5,8 @@ This plugin allows users to label and format images in daily notes, and can sear
 ![Image Memo Demo](images/image_demo.png)
 
 **Table of Contents**
-- [Image Formatting](#Image Formatting)
-- [Tag Calendar](#Tag Calendar)
+- [Image Formatting](#image-formatting)
+- [Tag Calendar](#tag-calendar)
 - [Options](#options)
 - [Notes](#notes)
 - [Examples](#examples)
@@ -67,7 +67,7 @@ There are also some options that are defined by the metadata of image itself, yo
 
 ## Tag Calendar
 
-Image formatting can be work at any notes, while if the image in daily notes, it can be searched in the tag calendar. The tag calendar is similar to the GitHub contribution calendar, but it is based on the tags in daily notes.
+Image formatting can be work at any notes, while if the image in **daily notes**, it can be searched in the tag calendar. The tag calendar is similar to the GitHub contribution calendar, but it is based on the tags in daily notes.
 
 ![Tag Calendar Demo](images/tag_calendar.gif)
 
@@ -76,8 +76,8 @@ Also, it's highly recommend to use this plugin together with [Obsidian Calendar]
 
 ## Notes
 
-- Image path should start from the *root* of the vault. For my personal opinion, it's better to use this plugin with some image path processing plugin, such as [Image auto upload Plugin](https://github.com/renmu123/obsidian-image-auto-upload-plugin) for remote images or image rename plugins such as [Local Images Plus](https://github.com/Sergei-Korneev/obsidian-local-images-plus).
-- Remote image *cannot* automatically fetch date, size and palette, so if you want to use these options please set the values manually or use local images.
+- Image path should start from the **root** of the vault. For my personal opinion, it's better to use this plugin with some image path processing plugin, such as [Image auto upload Plugin](https://github.com/renmu123/obsidian-image-auto-upload-plugin) for remote images or image rename plugins such as [Local Images Plus](https://github.com/Sergei-Korneev/obsidian-local-images-plus).
+- Remote image **cannot** automatically fetch date, size and palette, so if you want to use these options please set the values manually or use local images.
 - `showImage` and `showDesc` options let this plugin can be compatible with other image plugins, such as Image Gallery or Image Layout. You can use these plugins for showing the image and use Image Memo to add tags and information.
 
 ## Examples:
