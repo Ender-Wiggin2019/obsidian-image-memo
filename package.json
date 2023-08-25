@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-image-memo",
+  "name": "image-memo",
   "version": "0.5.0",
   "description": "Label and beautify your images in different modes, and display tags in calendar.",
   "main": "main.js",
