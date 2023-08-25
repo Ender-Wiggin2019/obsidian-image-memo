@@ -9,10 +9,7 @@ export default class JournalingPlugin extends Plugin {
   public settings: ISettings; // settings for the plugin
 
   onunload(): void {
-    // unload view
-    this.app.workspace
-      .getLeavesOfType(VIEW_TYPE_JOURNALING)
-      .forEach((leaf) => leaf.detach());
+    //Don't detach leaves https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#Don't+detach+leaves+in+%60onunload%60
   }
 
   async onload(): Promise<void> {
@@ -33,27 +30,11 @@ export default class JournalingPlugin extends Plugin {
 
     this.addSettingTab(new JournalingSettingsTab(this.app, this));
 
-    if (this.app.workspace.layoutReady) {
-      this.initLeaf();
-    } else {
-      this.registerEvent(
-        this.app.workspace.on("layout-ready", this.initLeaf.bind(this))
-      );
-    }
-
     this.saveSettings();
 
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
   }
 
-  initLeaf(): void {
-    if (this.app.workspace.getLeavesOfType(VIEW_TYPE_JOURNALING).length) {
-      return;
-    }
-    this.app.workspace.getRightLeaf(false).setViewState({
-      type: VIEW_TYPE_JOURNALING,
-    });
-  }
   onLayoutReady(): void {
     if (this.app.workspace.getLeavesOfType(VIEW_TYPE_JOURNALING).length) {
       return;

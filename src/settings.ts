@@ -72,7 +72,7 @@ export class JournalingSettingsTab extends PluginSettingTab {
     }
 
     this.containerEl.createEl("h3", {
-      text: "Tag Calendar Settings",
+      text: "Tag Calendar",
     });
     this.addDateRangeSetting();
     this.addFromColorSetting();
@@ -84,7 +84,7 @@ export class JournalingSettingsTab extends PluginSettingTab {
     this.addShowWeekdayLabelsSetting();
 
     this.containerEl.createEl("h3", {
-      text: "Note Settings",
+      text: "Note Image",
     });
 
     this.addShowImageSetting();
