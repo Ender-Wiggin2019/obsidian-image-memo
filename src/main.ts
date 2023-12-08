@@ -5,7 +5,6 @@ import { defaultSettings, ISettings, JournalingSettingsTab } from "./settings";
 import { VIEW_TYPE_JOURNALING } from "./constants";
 
 export default class JournalingPlugin extends Plugin {
-  private view: JournalingView; // the view to display tag calendar
   public settings: ISettings; // settings for the plugin
 
   onunload(): void {
@@ -16,22 +15,18 @@ export default class JournalingPlugin extends Plugin {
     await this.loadSettings();
     this.registerView(
       VIEW_TYPE_JOURNALING,
-      (leaf: WorkspaceLeaf) => (this.view = new JournalingView(leaf, this))
+      (leaf: WorkspaceLeaf) => new JournalingView(leaf, this)
     );
 
     // Register image info block
     this.registerMarkdownCodeBlockProcessor(
       "imemo",
       async (source, el, _ctx) => {
-        // imageInfo(source, el, this.app.vault, this.app.metadataCache, this);
         imageInfo(source, el, this.app.vault, this);
       }
     );
 
     this.addSettingTab(new JournalingSettingsTab(this.app, this));
-
-    this.saveSettings();
-
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
   }
 
@@ -50,7 +45,6 @@ export default class JournalingPlugin extends Plugin {
 
   async saveSettings() {
     await this.saveData(this.settings);
-    // update calendar
-    if (this.view) await this.view.renderReactComponent();
+    
   }
 }

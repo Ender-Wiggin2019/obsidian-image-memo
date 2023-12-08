@@ -4,32 +4,35 @@ This plugin allows users to label and format images in daily notes, and can sear
 
 ![Image Memo Demo](images/image_demo.png)
 
-**Table of Contents**
-- [Image Formatting](#image-formatting)
-- [Tag Calendar](#tag-calendar)
-- [Options](#options)
-- [Notes](#notes)
-- [Examples](#examples)
-- [Acknowledgments](#acknowledgments)
-- [License](#license)
-- [Contacts](#contacts)
+## Table of Contents
 
+- [Obsidian Image Memo](#obsidian-image-memo)
+  - [Table of Contents](#table-of-contents)
+  - [Image Formatting](#image-formatting)
+  - [Acknowledgments](#acknowledgments)
+  - [License](#license)
+  - [Contacts](#contacts)
 
 ## Image Formatting
+
 To create a image that can be formatted and search for this plugin, add the following code block to your note.
-````
+
+````markdown
 ```imemo
 ![[image]]
 #tag1 #tag2
 ```
 ````
+
 One of the main feature is to display different type of image. For example, a painting in gallery, a movie you just watched, or a photo you took. To display different type of image, you can add a type tag after the image tag.
-````
+
+````````markdown
 ```imemo
 ![[image]]
 type=art
 ```
 ````
+
 ![Image Memo Art Demo](images/art_demo.gif)
 
 
@@ -80,11 +83,12 @@ Also, it's highly recommend to use this plugin together with [Obsidian Calendar]
 - Remote image **cannot** automatically fetch date, size and palette, so if you want to use these options please set the values manually or use local images.
 - `showImage` and `showDesc` options let this plugin can be compatible with other image plugins, such as Image Gallery or Image Layout. You can use these plugins for showing the image and use Image Memo to add tags and information.
 
-## Examples:
+## Examples
 
 You can copy the following code block to see what does this image look like.
-````
-```imemo 
+
+````markdown
+```imemo
 ![example](https://ender-picgo.oss-cn-shenzhen.aliyuncs.com/img/CleanShot%202023-08-25%20at%2005.25.42@2x.png)
 
 name=A Wheatfield, with Cypresses
@@ -92,7 +96,7 @@ type=art
 date=Augest 20th
 notShow=path
 
-desc=The painting depicts golden fields of ripe wheat, a dark fastigiate Provençal cypress towering like a green obelisk to the right and lighter green olive trees in the middle distance, with hills and mountains visible behind, and white clouds swirling in an azure sky above. 
+desc=The painting depicts golden fields of ripe wheat, a dark fastigiate Provençal cypress towering like a green obelisk to the right and lighter green olive trees in the middle distance, with hills and mountains visible behind, and white clouds swirling in an azure sky above.
 
 #VanGogh #Gallery
 ```
@@ -107,4 +111,5 @@ This plugin is inspired by [Obsidian Gallery](https://github.com/Darakah/obsidia
 ![https://github.com/Ender-Wiggin2019/obsidian-image-memo/blob/main/LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Contacts
-- Email: [117010097@link.cuhk.edu.cn](mailto:117010097@link.cuhk.edu.cn)
+
+Email: [117010097@link.cuhk.edu.cn](mailto:117010097@link.cuhk.edu.cn)

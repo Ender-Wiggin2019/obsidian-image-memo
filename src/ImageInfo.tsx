@@ -155,7 +155,8 @@ export async function imageInfo(
       </AppContext.Provider>
     );
   } else {
-    MarkdownRenderer.renderMarkdown(
+    MarkdownRenderer.render(
+      this.app,
       PLUGIN_MARKDOWN_USAGE,
       elCanvas,
       "/",

@@ -193,6 +193,9 @@
 	   -moz-user-select: none;
 	        user-select: none;
 }
+.resize {
+	resize: both;
+}
 .flex-row {
 	flex-direction: row;
 }

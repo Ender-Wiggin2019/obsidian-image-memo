@@ -26,7 +26,7 @@ rating=3
 ----
 
 Please Check Release Notes for plugin changes:<br>
-https://github.com/Ender-Wiggin2019/obsidian-journaling
+https://github.com/Ender-Wiggin2019/obsidian-image-memo
 `;
 
 export const GALLERY_RESOURCES_MISSING = `

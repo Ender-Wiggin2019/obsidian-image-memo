@@ -1,4 +1,4 @@
-import { ItemView, TFile, WorkspaceLeaf } from "obsidian";
+import { ItemView, TFile, WorkspaceLeaf, debounce } from "obsidian";
 // import Calendar from "react-github-contribution-calendar";
 import { VIEW_DISPLAY_TEXT, VIEW_TYPE_JOURNALING } from "./constants";
 import { createRoot, Root } from "react-dom/client";
@@ -24,25 +24,6 @@ export default class JournalingView extends ItemView {
   constructor(leaf: WorkspaceLeaf, plugin: JournalingPlugin) {
     super(leaf);
     this.plugin = plugin;
-
-    this.onFileCreated = this.onFileCreated.bind(this);
-    this.onFileDeleted = this.onFileDeleted.bind(this);
-    this.onFileModified = this.onFileModified.bind(this);
-    this.onFileOpen = this.onFileOpen.bind(this);
-
-    this.openOrCreateDailyNote = this.openOrCreateDailyNote.bind(this);
-
-    // this.registerEvent(
-    // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // (this.app.workspace as any).on(
-    //   "periodic-notes:settings-updated",
-    //   this.onNoteSettingsUpdate
-    //   )
-    //   );
-    this.registerEvent(this.app.vault.on("create", this.onFileCreated));
-    this.registerEvent(this.app.vault.on("delete", this.onFileDeleted));
-    this.registerEvent(this.app.vault.on("modify", this.onFileModified));
-    this.registerEvent(this.app.workspace.on("file-open", this.onFileOpen));
   }
 
   getViewType(): string {
@@ -58,6 +39,36 @@ export default class JournalingView extends ItemView {
   }
 
   async onOpen() {
+    this.onFileCreated = this.onFileCreated.bind(this);
+    this.onFileDeleted = this.onFileDeleted.bind(this);
+    this.onFileModified = this.onFileModified.bind(this);
+    this.onFileOpen = this.onFileOpen.bind(this);
+    this.onSettingsUpdate = this.onSettingsUpdate.bind(this);
+
+    this.openOrCreateDailyNote = this.openOrCreateDailyNote.bind(this);
+
+    this.registerEvent(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (this.app.workspace as any).on(
+        "obsidian-image-memo:settings-updated", // TODO: how to bind?
+        this.onSettingsUpdate
+      )
+    );
+
+    this.registerEvent(this.app.vault.on("create", this.onFileCreated));
+    this.registerEvent(this.app.vault.on("delete", this.onFileDeleted));
+    this.registerEvent(
+      this.app.vault.on("modify", debounce(this.onFileModified, 1000, true))
+    );
+    this.registerEvent(this.app.workspace.on("file-open", this.onFileOpen));
+
+    // TODO: responsive
+    // this.registerEvent(
+    //   this.app.workspace.on("resize", () => {
+    //     this.handleResize();
+    //   })
+    // );
+
     this.root = createRoot(this.containerEl.children[1]);
     await this.updateJournalingData();
   }
@@ -65,6 +76,11 @@ export default class JournalingView extends ItemView {
   async onClose() {
     // ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
     this.root.unmount();
+  }
+
+  private onSettingsUpdate(): void {
+    // TODO: update state
+    this.renderReactComponent();
   }
 
   async updateJournalingData() {
@@ -120,9 +136,7 @@ export default class JournalingView extends ItemView {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mode = (this.app.vault as any).getConfig("defaultViewMode");
-    const leaf = inNewSplit
-      ? workspace.splitActiveLeaf()
-      : workspace.getUnpinnedLeaf();
+    const leaf = workspace.getLeaf(inNewSplit);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await leaf.openFile(existingFile, { active: true, mode });
